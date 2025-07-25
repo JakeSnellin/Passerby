@@ -4,7 +4,7 @@ import './globals.scss';
 import { getMenuBySlug } from '@/lib/utils';
 import { Menu } from '@/types/layout';
 
-export const metaData = {
+export const metadata = {
   title: 'Passerby Site',
   description:
     'A modern, performant agency website built with Next.js, powered by a headless WordPress backend',
