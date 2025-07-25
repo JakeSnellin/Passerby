@@ -11,7 +11,7 @@ A modern, performant agency website built with **Next.js**, powered by a **headl
 - **Animations:** [GSAP](https://greensock.com/gsap/) + CSS transitions
 - **Backend:** WordPress (Headless) with:
   - [WPGraphQL](https://www.wpgraphql.com/)
-  - [WPGraphQL Gutenberg by pristas-peter](https://github.com/pristas-peter/wp-graphql-gutenberg)
+  - [WPGraphQL Content Blocks by WP Engine](https://github.com/wpengine/wp-graphql-content-blocks)
 - **GraphQL Client:** [graphql-request](https://www.npmjs.com/package/graphql-request)
 - **Image Optimization:** Next.js `<Image />` with remote loader
 - **Code Style:** Prettier
@@ -52,45 +52,59 @@ npm start
 
 ## 🌐 Environment Variables
 
-Create a `.env.local` file in the root:
+Create a `.env.local` file in the project root for local development. This file should not be committed:
 
 ```env
-WORDPRESS_GRAPHQL_ENDPOINT=https://your-wp-site.com/graphql
+NEXT_PUBLIC_WORDPRESS_API_URL=https://your-wp-site.com/graphql
 ```
 
 > Replace `your-wp-site.com` with your actual WordPress site URL. This is not a secret key and can be committed unless your project requires otherwise.
 
-Ensure **WPGraphQL** and **GraphQL Gutenberg** plugins are enabled in your WordPress backend.
+**Important**: Make sure to set the same environment variable (NEXT_PUBLIC_WORDPRESS_API_URL) with the appropriate URL on your staging and production servers (e.g., in Vercel dashboard or your hosting environment) to ensure the frontend connects to the correct backend.
+
+Ensure **WPGraphQL** and **WPGraphQL Content Blocks** plugins are enabled in your WordPress backend.
 
 ---
 
 ## 📦 Data Fetching Strategy
 
-This project uses **static generation (SSG)** via the **App Router** for maximum performance.
+This project uses **static generation (SSG)** via the **Next.js App Router** for optimal performance.
 
-- `generateStaticParams()` for dynamic routes (e.g. projects, blog posts)
+- `generateStaticParams()` for dynamic routes (e.g. pages, posts)
 - `generateMetadata()` for SEO
-- `graphql-request` for all GraphQL queries
+- GraphQL queries are made using a configured `client` instance based on `graphql-request`
+- Structured Gutenberg block data is fetched using **WPGraphQL Content Blocks** (by WP Engine)
+- Blocks are rendered using a custom `<BlockRenderer />` React component
+- **Note:** This setup does not use `getStaticProps` or `getServerSideProps`; everything is handled via the App Router conventions.
 
-> You do **not** use `getStaticProps` or `getServerSideProps` with the App Router.
+### 🧩 Example: Fetching and Rendering a Page
 
-**Example:**
-```ts
-// lib/queries/getHomepage.ts
-import { gql, request } from 'graphql-request';
+```tsx
+// app/sample-page/page.tsx
 
-const HOMEPAGE_QUERY = gql`
-  query GetHomepage {
-    pageBy(uri: "/") {
-      title
-      blocksJSON
-    }
+import { client } from '@/lib/graphqlClient';
+import { GET_PAGE_BY_SLUG } from '@/lib/queries/getPageBySlug';
+import { BlockRenderer } from '@/components/BlockRenderer';
+import { notFound } from 'next/navigation';
+
+export default async function SamplePage() {
+  const variables = {
+    id: 'sample-page',
+    idType: 'URI',
+  };
+
+  const { page }: { page: PageProps | null } = await client.request(GET_PAGE_BY_SLUG, variables);
+
+  if (!page) {
+    notFound();
   }
-`;
 
-export async function getHomepageData() {
-  const data = await request(process.env.WORDPRESS_GRAPHQL_ENDPOINT!, HOMEPAGE_QUERY);
-  return data;
+  return (
+    <main>
+      <h1>{page.title}</h1>
+      <BlockRenderer blocks={page.editorBlocks} />
+    </main>
+  );
 }
 ```
 
@@ -134,7 +148,7 @@ Example `.prettierrc`:
 Deployed to **Vercel**. Recommended settings:
 
 - **Node.js Version:** 22.x (set in Vercel Project Settings > General > Node Version)
-- **Environment Variables:** Add `WORDPRESS_GRAPHQL_ENDPOINT`
+- **Environment Variables:** Add the environment variable `NEXT_PUBLIC_WORDPRESS_API_URL` with the appropriate URL
 - **Build Command:** `npm run build`
 - **Output Directory:** `.next`
 
@@ -148,7 +162,7 @@ No automated testing included (yet). Consider adding unit and integration tests 
 
 ## 🗃️ Version Control
 
-Git is initialized in the root of this project.
+Git is initialised in the root of this project.
 
 To connect to a remote repository:
 
@@ -161,9 +175,9 @@ git push -u origin main
 
 ## ✍️ Content Notes
 
-- Gutenberg blocks are parsed via the `graphql-gutenberg` plugin
-- Blocks are returned as `blocksJSON`
-- Frontend dynamically renders blocks with custom components where applicable
+- Gutenberg blocks are parsed using **WPGraphQL Content Blocks** by WP Engine
+- Blocks are returned as structured JSON via the `editorBlocks` field
+- These blocks are rendered on the frontend using a custom `<BlockRenderer />` React component
 
 ---
 
