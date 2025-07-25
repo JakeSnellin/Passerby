@@ -8,7 +8,7 @@ export const revalidate = 60;
 
 export default async function Sample() {
   const variables = {
-    id: 'sample-page',
+    id: 'sample',
     idType: 'URI',
   };
 
