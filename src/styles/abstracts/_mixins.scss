@@ -1,0 +1,64 @@
+@use '@/styles/abstracts/functions' as *;
+@use '@/styles/base/typography' as *;
+@use 'sass:map';
+
+@mixin button-state(
+  $bg: transparent,
+  $color: null,
+  $border-color: null,
+  $hover-opacity: 0.4,
+  $active-opacity: 0.4
+) {
+  background-color: $bg;
+  color: $color;
+  @if $border-color {
+    border-color: $border-color;
+  }
+
+  &:hover {
+    background-color: fade($bg, $hover-opacity);
+    color: $color;
+  }
+
+  &:active {
+    background-color: fade($bg, $active-opacity);
+    color: fade($color, 0.4);
+  }
+
+  &.is-selected {
+    background-color: $bg;
+  }
+}
+
+@mixin font-size($type-map, $breakpoint: desktop) {
+  @if $type-map != null {
+    $value: map.get($type-map, $breakpoint);
+    font-size: $value;
+  } @else {
+    @warn "Font size map is null!";
+  }
+}
+
+@mixin line-height($value) {
+  @if $value != null {
+    line-height: $value;
+  } @else {
+    @warn "Font size for `#{$value}` not found!";
+  }
+}
+
+@mixin letter-spacing($value) {
+  @if $value != null {
+    letter-spacing: $value;
+  } @else {
+    @warn "Font size for `#{$value}` not found!";
+  }
+}
+
+@mixin font-weight($value) {
+  @if $value != null {
+    font-weight: $value;
+  } @else {
+    @warn "Font size for `#{$value}` not found!";
+  }
+}

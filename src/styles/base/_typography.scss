@@ -1,0 +1,90 @@
+$font-sizes: (
+  heading-1: (
+    desktop: 24px,
+    mobile: 16px,
+  ),
+
+  logo: (
+    desktop: 30px,
+    mobile: 22px,
+  ),
+  logo-sm: (
+    desktop: 24px,
+    mobile: 20px,
+  ),
+
+  section-title: (
+    desktop: 16px,
+    mobile: 14px,
+  ),
+
+  body-sm: (
+    desktop: 16px,
+    mobile: 14px,
+  ),
+  body-lg: (
+    desktop: 24px,
+    mobile: 16px,
+  ),
+
+  link: (
+    desktop: 18px,
+    mobile: 16px,
+  ),
+
+  card: (
+    desktop: 14px,
+    mobile: 12px,
+  ),
+
+  metric-value: (
+    desktop: 65px,
+    mobile: 44px,
+  ),
+  metric-label: (
+    desktop: 24px,
+    mobile: 14px,
+  ),
+
+  citation: (
+    desktop: 16px,
+    mobile: 14px,
+  ),
+
+  button: (
+    desktop: 16px,
+    mobile: 14px,
+  ),
+
+  footer-link: (
+    desktop: 14px,
+    mobile: 12px,
+  ),
+  footer-note: (
+    desktop: 14px,
+    mobile: 12px,
+  ),
+);
+
+$line-heights: (
+  100: 1,
+  142: 1.42,
+  150: 1.5,
+  160: 1.6,
+  165: 1.65,
+  171: 1.714,
+);
+
+$letter-spacings: (
+  0: 0em,
+  9: 0.09em,
+  50: 0.5em,
+);
+
+$font-weights: (
+  250: 250,
+  275: 275,
+  300: 300,
+  400: 400,
+  500: 500,
+);

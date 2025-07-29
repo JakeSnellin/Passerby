@@ -1,0 +1,14 @@
+// main.scss
+
+// Abstracts (functions, variables, mixins)
+@use '@/styles/abstracts/functions' as *;
+@use '@/styles/abstracts/variables' as *;
+@use '@/styles/abstracts/mixins' as *;
+
+// Base styles
+@use '@/styles/base/fonts' as *;
+@use '@/styles/base/reset' as *;
+@use '@/styles/base/typography' as *;
+
+// Component styles
+@use '@/styles/components/hero' as *;
