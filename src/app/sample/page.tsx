@@ -20,7 +20,7 @@ export default async function Sample() {
 
   return (
     <main>
-      <h1>{page.title}</h1>
+      <h1 className="logo__text">{page.title}</h1>
       <BlockRenderer blocks={page.editorBlocks} />
     </main>
   );

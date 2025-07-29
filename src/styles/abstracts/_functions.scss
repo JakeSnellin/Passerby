@@ -1,0 +1,17 @@
+@function get-spacer($size) {
+  @if map-has-key($spacers, $size) {
+    @return map-get($spacers, $size);
+  } @else {
+    @warn "Spacer size `#{$size}` not found in \$spacers map.";
+    @return null;
+  }
+}
+
+@function fade($color, $opacity) {
+  @if type-of($color) == color {
+    @return rgba($color, $opacity);
+  } @else {
+    @warn "Invalid color `#{$color}` passed to fade().";
+    @return $color;
+  }
+}

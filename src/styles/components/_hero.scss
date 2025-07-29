@@ -1,0 +1,10 @@
+@use '@/styles/abstracts/mixins' as *;
+@use '@/styles/base/typography' as *;
+@use 'sass:map';
+
+.logo__text {
+  font-family: 'JejuMyeongjo';
+  @include letter-spacing(map.get($letter-spacings, 9));
+  @include font-size(map.get($font-sizes, logo), desktop);
+  @include font-weight(map.get($font-weights, 400));
+}
