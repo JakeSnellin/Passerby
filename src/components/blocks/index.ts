@@ -1,20 +1,20 @@
-import { BlockComponentMap } from '@/types/block';
+import { BlockComponentsMap } from '@/types/block';
 import dynamic from 'next/dynamic';
 
-//BlockComponentMap: core/paragraph: React.ComponentType<{ content: string }>;
-
-export const blockComponents: BlockComponentMap = {
-  'core/paragraph': dynamic(() => import('./Paragraph')),
-  'core/quote': dynamic(() => import('./Quote')),
-  'core/image': dynamic(() => import('./Image')),
-  'core/heading': dynamic(() => import('./Heading')),
-  'core/list': dynamic(() => import('./List')),
-  'core/cover': dynamic(() => import('./Cover')),
-  'core/gallery': dynamic(() => import('./Gallery')),
-  'core/button': dynamic(() => import('./Button')),
-  'core/separator': dynamic(() => import('./Separator')),
-  'core/spacer': dynamic(() => import('./Spacer')),
-  'core/html': dynamic(() => import('./HTML')),
-  'core/embed': dynamic(() => import('./Embed')),
-  'core/video': dynamic(() => import('./Video')),
+export const blockComponentsMap: BlockComponentsMap = {
+  CoreParagraph: dynamic(() => import('./Paragraph')),
+  CoreHeading: dynamic(() => import('./Heading')),
+  CoreButton: dynamic(() => import('./Button')),
+  CoreCover: dynamic(() => import('./Cover')),
+  CoreEmbed: dynamic(() => import('./Embed')),
+  CoreGallery: dynamic(() => import('./Gallery')),
+  CoreHTML: dynamic(() => import('./HTML')),
+  CoreGroup: dynamic(() => import('./Group')),
+  HeroBlock: dynamic(() => import('./Hero')),
+  CoreList: dynamic(() => import('./List')),
+  CoreQuote: dynamic(() => import('./Quote')),
+  CoreSeparator: dynamic(() => import('./Separator')),
+  CoreSpacer: dynamic(() => import('./Spacer')),
+  CoreVideo: dynamic(() => import('./Video')),
+  CoreImage: dynamic(() => import('./Image')),
 };

@@ -1,106 +1,115 @@
 import type { ComponentType } from 'react';
+import { ReactNode } from 'react';
 
-export type BlockName =
-  | 'core/paragraph'
-  | 'core/quote'
-  | 'core/image'
-  | 'core/heading'
-  | 'core/list'
-  | 'core/cover'
-  | 'core/gallery'
-  | 'core/button'
-  | 'core/separator'
-  | 'core/spacer'
-  | 'core/html'
-  | 'core/embed'
-  | 'core/video';
-
-//export type BlockComponent = ComponentType<{ block: BlockData }>;
-
-export interface BaseBlock {
-  name: BlockName;
-  __typename: string;
+// ACF blocks
+export interface HeroBlock {
+  __typename: 'HeroBlock';
+  logoImage: {
+    altText: string;
+    sourceUrl: string;
+  };
+  titleText: string;
+  subtitleText: string;
+  descriptionText: string;
 }
 
-export interface CoreButtonBlock extends BaseBlock {
-  name: 'core/button';
-  attributes: {
+//Core WordPress blocks
+
+export interface BaseBlock<TAttributes = {}> {
+  name: string;
+  children?: ReactNode;
+  __typename: string;
+  attributes: TAttributes;
+  innerBlocks?: BlockData[];
+}
+export interface CoreGroupBlock
+  extends BaseBlock<{
+    className?: string;
+    layout?: {
+      type?: string;
+      orientation?: string;
+    };
+  }> {
+  __typename: 'CoreGroup';
+  name: 'core/group';
+  innerBlocks: BlockData[];
+}
+
+export interface CoreButtonBlock
+  extends BaseBlock<{
     text: string;
     url: string;
-    style?: string;
-    align?: 'left' | 'center' | 'right';
-  };
+    style: string;
+    align: 'left' | 'center' | 'right';
+  }> {
+  __typename: 'CoreButton';
+  name: 'core/button';
 }
 
-export interface CoreVideoBlock extends BaseBlock {
-  name: 'core/video';
-  attributes: {
-    url: string; // video source URL
+export interface CoreVideoBlock
+  extends BaseBlock<{
+    url: string;
     autoplay?: boolean;
     loop?: boolean;
     muted?: boolean;
     controls?: boolean;
-    poster?: string; // thumbnail image URL
+    poster?: string;
     preload?: 'auto' | 'metadata' | 'none';
-  };
+  }> {
+  __typename: 'CoreVideo';
+  name: 'core/video';
 }
 
-export interface CoreParagraphBlock extends BaseBlock {
+export interface CoreParagraphBlock extends BaseBlock<{ content: string }> {
+  __typename: 'CoreParagraph';
   name: 'core/paragraph';
-  attributes: {
-    content: string;
-  };
 }
 
-export interface CoreHeadingBlock extends BaseBlock {
-  name: 'core/heading';
-  attributes: {
+export interface CoreHeadingBlock
+  extends BaseBlock<{
     content: string;
-    level: number; // 1–6
+    level?: number;
     textAlign?: 'left' | 'center' | 'right' | 'justify';
-  };
+  }> {
+  __typename: 'CoreHeading';
+  name: 'core/heading';
 }
 
-export interface CoreQuoteBlock extends BaseBlock {
+export interface CoreQuoteBlock
+  extends BaseBlock<{ value: string; citation?: string; textAlign?: 'left' | 'center' | 'right' }> {
+  __typename: 'CoreQuote';
   name: 'core/quote';
-  attributes: {
-    value: string;
-    citation?: string;
-    textAlign?: 'left' | 'center' | 'right';
-  };
 }
 
-export interface CoreCoverBlock extends BaseBlock {
-  name: 'core/cover';
-  attributes: {
+export interface CoreCoverBlock
+  extends BaseBlock<{
     url?: string;
-    dimRatio?: number; // 0–100 for overlay opacity
+    dimRatio?: number;
     overlayColor?: string;
-    contentPosition?: string; // 'center center', etc.
+    contentPosition?: string;
     focalPoint?: { x: number; y: number };
-  };
+  }> {
+  __typename: 'CoreCover';
+  name: 'core/cover';
   innerBlocks?: BlockData[];
 }
 
-export interface CoreImageBlock extends BaseBlock {
+export interface CoreImageBlock extends BaseBlock<{ url: string; alt?: string }> {
+  __typename: 'CoreImage';
   name: 'core/image';
-  attributes: {
-    url: string;
-    alt?: string;
-  };
 }
 
-export interface CoreListBlock extends BaseBlock {
-  name: 'core/list';
-  attributes: {
-    values: string; // raw HTML string with <li>
+export interface CoreListBlock
+  extends BaseBlock<{
+    values: string;
     ordered?: boolean;
-  };
+  }> {
+  __typename: 'CoreList';
+  name: 'core/list';
 }
 
-export interface CoreGalleryBlock extends BaseBlock {
-  name: 'core/gallery';
-  attributes: {
+export interface CoreGalleryBlock
+  extends BaseBlock<{
     images: {
       id: number;
       url: string;
@@ -109,65 +118,58 @@ export interface CoreGalleryBlock extends BaseBlock {
     }[];
     columns?: number;
     imageCrop?: boolean;
-  };
+  }> {
+  __typename: 'CoreGallery';
+  name: 'core/gallery';
 }
 
-export interface CoreSpacerBlock extends BaseBlock {
+export interface CoreSpacerBlock extends BaseBlock<{ height: string }> {
+  __typename: 'CoreSpacer';
   name: 'core/spacer';
-  attributes: {
-    height: string;
-  };
 }
 
-export interface CoreSeparatorBlock extends BaseBlock {
+export interface CoreSeparatorBlock extends BaseBlock<{ style?: 'default' | 'wide' | 'dots' }> {
+  __typename: 'CoreSeparator';
   name: 'core/separator';
-  attributes: {
-    style?: 'default' | 'wide' | 'dots';
-  };
 }
 
-export interface CoreHTMLBlock extends BaseBlock {
+export interface CoreHTMLBlock extends BaseBlock<{ content: string }> {
+  __typename: 'CoreHTML';
   name: 'core/html';
-  attributes: {
-    content: string; // raw HTML
-  };
 }
 
-export interface CoreEmbedBlock extends BaseBlock {
-  name: 'core/embed';
-  attributes: {
+export interface CoreEmbedBlock
+  extends BaseBlock<{
     url: string;
     type?: string;
     providerNameSlug?: string;
     responsive?: boolean;
-  };
+  }> {
+  __typename: 'CoreEmbed';
+  name: 'core/embed';
 }
 
 export type BlockData =
   | CoreParagraphBlock
-  | CoreQuoteBlock
-  | CoreImageBlock
   | CoreHeadingBlock
-  | CoreListBlock
-  | CoreCoverBlock
-  | CoreGalleryBlock
+  | CoreGroupBlock
   | CoreButtonBlock
+  | CoreCoverBlock
+  | CoreEmbedBlock
+  | CoreGalleryBlock
+  | CoreHTMLBlock
+  | CoreImageBlock
+  | CoreListBlock
+  | CoreQuoteBlock
   | CoreSeparatorBlock
   | CoreSpacerBlock
-  | CoreHTMLBlock
-  | CoreEmbedBlock
-  | CoreVideoBlock;
+  | CoreVideoBlock
+  | HeroBlock;
 
-// Map block names to attribute types
-export type BlockAttributesMap = {
-  [k in BlockData as k['name']]: k['attributes'];
+type BlockTypeMap = {
+  [K in BlockData as K['__typename']]: K;
 };
 
-//'core/paragraph': { content: string };
-
-// Map block names to React component types with appropriate props
-export type BlockComponentMap = {
-  [k in keyof BlockAttributesMap]: ComponentType<BlockAttributesMap[k]>;
+export type BlockComponentsMap = {
+  [K in keyof BlockTypeMap]: ComponentType<BlockTypeMap[K]>;
 };
-
-//core/paragraph: React.ComponentType<{ content: string }>;

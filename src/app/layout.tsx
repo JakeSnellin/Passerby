@@ -1,6 +1,6 @@
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import { getMenuBySlug } from '@/lib/utils';
+import { getMenuBySlug } from '@/lib/utils/getMenuBySlug';
 import { Menu } from '@/types/layout';
 import '@/styles/main.scss';
 

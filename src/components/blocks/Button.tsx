@@ -1,5 +1,5 @@
 import { CoreButtonBlock } from '@/types/block';
 
-export default function ({ text, url, style, align }: CoreButtonBlock['attributes']) {
-  return <></>;
+export default function Button() {
+  return <div>Button</div>;
 }
