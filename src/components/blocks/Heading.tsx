@@ -1,5 +1,5 @@
 import { CoreHeadingBlock } from '@/types/block';
 
-export default function Paragraph({ content, level, textAlign }: CoreHeadingBlock['attributes']) {
-  return <p>{content}</p>;
+export default function Heading({ attributes: { content } }: CoreHeadingBlock) {
+  return <div>{content}</div>;
 }

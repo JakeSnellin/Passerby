@@ -1,5 +1,5 @@
 import { CoreListBlock } from '@/types/block';
 
-export default function ({ values, ordered }: CoreListBlock['attributes']) {
-  return <></>;
+export default function List() {
+  return <div>List</div>;
 }
