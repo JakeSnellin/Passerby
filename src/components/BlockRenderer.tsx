@@ -1,7 +1,7 @@
 'use client';
 
 import { BlockData } from '@/types/block';
-import { blockComponentsMap } from './blocks';
+import { blockComponentsMap } from '@/components/blocks/index';
 import { ComponentType } from 'react';
 
 interface BlockRendererProps {
@@ -12,8 +12,6 @@ export default function BlockRenderer({ blocks }: BlockRendererProps) {
   return (
     <>
       {blocks.map((block, index) => {
-        console.log(`Rendering block: ${block.__typename}`, block);
-        console.count('BlockRenderer rendered');
         const Component = blockComponentsMap[block.__typename] as ComponentType<any>;
         if (!Component) {
           return <div key={index}>Unsupported block type: {block.__typename}</div>;

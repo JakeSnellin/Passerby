@@ -3,6 +3,7 @@ import Footer from '@/components/layout/Footer';
 import { getMenuBySlug } from '@/lib/utils/getMenuBySlug';
 import { Menu } from '@/types/layout';
 import '@/styles/main.scss';
+import { ViewTransitions } from 'next-view-transitions';
 
 export const viewport = {
   width: 'device-width',
@@ -48,12 +49,14 @@ export default async function RootLayout({
   ]);
 
   return (
-    <html lang="en">
-      <body>
-        <Header {...headerData} />
-        {children}
-        <Footer {...footerData} />
-      </body>
-    </html>
+    <ViewTransitions>
+      <html lang="en">
+        <body>
+          <Header {...headerData} />
+          <main className="page-content">{children}</main>
+          <Footer {...footerData} />
+        </body>
+      </html>
+    </ViewTransitions>
   );
 }

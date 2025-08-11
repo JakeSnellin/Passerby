@@ -1,0 +1,14 @@
+body {
+  background: black;
+}
+
+.page-content {
+  position: relative;
+  padding-top: 72px;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  background-color: rgba(255, 254, 246, 1);
+  padding-bottom: 64px;
+  view-transition-name: page-content;
+}

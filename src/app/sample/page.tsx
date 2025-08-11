@@ -1,6 +1,6 @@
 import BlockRenderer from '@/components/BlockRenderer';
 import { GET_PAGE_BY_SLUG } from '@/graphql/queries/getPageBySlug';
-import { client } from '@/lib/api';
+import { client } from '@/lib/graphql/client';
 import { PageProps } from '@/types/page';
 import { notFound } from 'next/navigation';
 import { BlockData } from '@/types/block';
