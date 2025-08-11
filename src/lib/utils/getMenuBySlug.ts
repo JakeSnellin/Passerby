@@ -1,6 +1,6 @@
 //General utility functions
 
-import { client } from '@/lib/api';
+import { client } from '@/lib/graphql/client';
 import { GET_MENU_BY_SLUG } from '@/graphql/queries/getMenuBySlug';
 import { Menu, RawMenu } from '@/types/layout';
 
