@@ -1,6 +1,6 @@
 import BlockRenderer from '@/components/BlockRenderer';
 import { GET_PAGE_BY_SLUG } from '@/graphql/queries/getPageBySlug';
-import { client } from '@/lib/api';
+import { client } from '@/lib/graphql/client';
 import { normaliseBlocks } from '@/lib/utils/normaliseBlocks';
 import { PageProps } from '@/types/page';
 import { notFound } from 'next/navigation';
@@ -8,7 +8,9 @@ import { BlockData } from '@/types/block';
 
 export const revalidate = 60;
 
-export default async function Projects() {
+type ProjectsPageRef = React.ForwardedRef<HTMLDivElement>;
+
+export default async function Projects(ref: ProjectsPageRef) {
   const variables = {
     id: '/',
     idType: 'URI',

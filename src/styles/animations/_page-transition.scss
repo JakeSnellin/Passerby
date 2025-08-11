@@ -1,0 +1,43 @@
+/* Disable default animations for header, footer & page content groups */
+::view-transition-group(page-content),
+::view-transition-group(header-menu),
+::view-transition-group(footer-menu) {
+  animation: none !important;
+}
+
+/* Page content transition styles */
+::view-transition-old(page-content) {
+  z-index: 1;
+}
+
+::view-transition-new(page-content) {
+  z-index: 2;
+}
+
+::view-transition-image-pair(page-content) {
+  isolation: isolate;
+  will-change: transform; /* optimize for transform animations */
+}
+
+/* Header and footer transition styles */
+/* Keep header & footer fixed above page content layers */
+::view-transition-group(header-menu),
+::view-transition-group(footer-menu) {
+  z-index: 100;
+}
+
+/* Show only new header/footer snapshot to avoid double rendering */
+::view-transition-old(header-menu),
+::view-transition-old(footer-menu) {
+  opacity: 0;
+}
+
+::view-transition-new(header-menu),
+::view-transition-new(footer-menu) {
+  opacity: 1;
+}
+
+::view-transition-image-pair(header-menu),
+::view-transition-image-pair(footer-menu) {
+  will-change: opacity; /* optimize opacity transitions */
+}

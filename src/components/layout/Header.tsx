@@ -1,11 +1,16 @@
 import { Menu } from '@/types/layout';
+import TransitionLink from '@/components/TransitionLink';
 
 export default function Header(menu: Menu) {
-  const { id, name, slug, items } = menu;
+  const { slug, items } = menu;
   return (
-    <ul>
+    <ul className={slug}>
       {items.map((item) => (
-        <li key={item.id}>{item.label}</li>
+        <li key={item.id}>
+          <TransitionLink href={item.path} ariaLabel={`Navigate to ${item.label}`}>
+            {item.label}
+          </TransitionLink>
+        </li>
       ))}
     </ul>
   );

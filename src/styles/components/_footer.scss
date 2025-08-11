@@ -1,0 +1,11 @@
+.footer-menu {
+  background: transparent;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  z-index: 100;
+  margin-top: -64px;
+  padding: 20px;
+  view-transition-name: footer-menu;
+}

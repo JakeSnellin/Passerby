@@ -9,6 +9,12 @@
 @use '@/styles/base/fonts' as *;
 @use '@/styles/base/reset' as *;
 @use '@/styles/base/typography' as *;
+@use '@/styles/base/layout' as *;
 
 // Component styles
 @use '@/styles/components/hero' as *;
+@use '@/styles/components/header' as *;
+@use '@/styles/components/footer' as *;
+
+// Animation styles
+@use '@/styles/animations/page-transition' as *;
