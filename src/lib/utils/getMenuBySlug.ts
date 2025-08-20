@@ -3,11 +3,12 @@
 import { client } from '@/lib/graphql/client';
 import { GET_MENU_BY_SLUG } from '@/graphql/queries/getMenuBySlug';
 import { Menu, RawMenu } from '@/types/layout';
+import { QueryVariables, IdTypeEnum } from '@/types/graphql';
 
 export async function getMenuBySlug(slug: string): Promise<Menu> {
-  const variables = {
+  const variables: QueryVariables<IdTypeEnum> = {
     id: slug,
-    idType: 'SLUG',
+    idType: IdTypeEnum.SLUG,
   };
 
   const data: RawMenu = await client.request(GET_MENU_BY_SLUG, variables);
