@@ -5,13 +5,14 @@ import { PageProps } from '@/types/page';
 import { notFound } from 'next/navigation';
 import { BlockData } from '@/types/block';
 import { normaliseBlocks } from '@/lib/utils/normaliseBlocks';
+import { IdTypeEnum, QueryVariables } from '@/types/graphql';
 
 export const revalidate = 60;
 
 export default async function Sample() {
-  const variables = {
+  const variables: QueryVariables<IdTypeEnum> = {
     id: 'sample',
-    idType: 'URI',
+    idType: IdTypeEnum.URI,
   };
 
   const { page }: { page: PageProps | null } = await client.request(GET_PAGE_BY_SLUG, variables);

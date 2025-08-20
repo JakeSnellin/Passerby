@@ -2,21 +2,20 @@ import BlockRenderer from '@/components/BlockRenderer';
 import { GET_PAGE_BY_SLUG } from '@/graphql/queries/getPageBySlug';
 import { client } from '@/lib/graphql/client';
 import { normaliseBlocks } from '@/lib/utils/normaliseBlocks';
-import { PageProps } from '@/types/page';
+import { GetPageBySlugResponse } from '@/types/page';
 import { notFound } from 'next/navigation';
 import { BlockData } from '@/types/block';
+import { QueryVariables, IdTypeEnum } from '@/types/graphql';
 
 export const revalidate = 60;
 
-type ProjectsPageRef = React.ForwardedRef<HTMLDivElement>;
-
-export default async function Projects(ref: ProjectsPageRef) {
-  const variables = {
+export default async function Projects() {
+  const variables: QueryVariables<IdTypeEnum> = {
     id: '/',
-    idType: 'URI',
+    idType: IdTypeEnum.URI,
   };
 
-  const { page }: { page: PageProps | null } = await client.request(GET_PAGE_BY_SLUG, variables);
+  const { page }: GetPageBySlugResponse = await client.request(GET_PAGE_BY_SLUG, variables);
 
   if (!page) {
     notFound();
