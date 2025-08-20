@@ -5,3 +5,7 @@ export interface PageProps {
   title: string;
   editorBlocks: BlockData[];
 }
+
+export interface GetPageBySlugResponse {
+  page: PageProps | null;
+}

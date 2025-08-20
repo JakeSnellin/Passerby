@@ -11,6 +11,7 @@ export const blockComponentsMap: BlockComponentsMap = {
   CoreHTML: dynamic(() => import('./HTML')),
   CoreGroup: dynamic(() => import('./Group')),
   HeroBlock: dynamic(() => import('./Hero')),
+  ProjectOverviewBlock: dynamic(() => import('./ProjectOverview')),
   CoreList: dynamic(() => import('./List')),
   CoreQuote: dynamic(() => import('./Quote')),
   CoreSeparator: dynamic(() => import('./Separator')),

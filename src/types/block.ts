@@ -13,6 +13,18 @@ export interface HeroBlock {
   descriptionText: string;
 }
 
+export interface ProjectOverviewBlock {
+  __typename: 'ProjectOverviewBlock';
+  projectTitleText: string;
+  projectWebsite: string;
+  overviewText: {
+    overviewTitle: string;
+    overviewBodyText: string;
+    optionalTaskSubheading?: string;
+    optionalTaskBodyText?: string;
+  };
+}
+
 //Core WordPress blocks
 
 export interface BaseBlock<TAttributes = {}> {
@@ -164,7 +176,8 @@ export type BlockData =
   | CoreSeparatorBlock
   | CoreSpacerBlock
   | CoreVideoBlock
-  | HeroBlock;
+  | HeroBlock
+  | ProjectOverviewBlock;
 
 type BlockTypeMap = {
   [K in BlockData as K['__typename']]: K;
