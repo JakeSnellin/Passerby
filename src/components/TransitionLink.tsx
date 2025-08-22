@@ -3,7 +3,7 @@
 import React, { ReactNode } from 'react';
 import Link, { LinkProps } from 'next/link';
 import { useTransitionRouter } from 'next-view-transitions';
-import pageAnimation from '@/lib/animations/pageTransition';
+import { usePathname } from 'next/navigation';
 
 interface TransitionLinkProps extends LinkProps {
   children: ReactNode;
@@ -18,7 +18,7 @@ export default function TransitionLink({
   ...props
 }: TransitionLinkProps) {
   const router = useTransitionRouter();
-
+  const pathName = usePathname();
   const prefersReducedMotion =
     typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -31,18 +31,21 @@ export default function TransitionLink({
       e.shiftKey ||
       e.button !== 0 ||
       e.currentTarget.target === '_blank'
-    ) {
+    )
       return;
-    }
 
     e.preventDefault();
 
+    const normalisedHref = href.replace(/\/$/, '');
+    const normalisedPath = pathName.replace(/\/$/, '');
+
+    if (normalisedHref === normalisedPath) return;
+
     const supportsViewTransition = 'startViewTransition' in document;
 
-    if (supportsViewTransition) {
-      router.push(href, { onTransitionReady: prefersReducedMotion ? undefined : pageAnimation });
+    if (supportsViewTransition && !prefersReducedMotion) {
+      document.startViewTransition(() => router.push(href));
     } else {
-      // Fallback: normal navigation without animation
       router.push(href);
     }
   };
