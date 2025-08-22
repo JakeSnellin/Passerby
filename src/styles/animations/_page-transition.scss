@@ -1,43 +1,57 @@
-/* Disable default animations for header, footer & page content groups */
-::view-transition-group(page-content),
-::view-transition-group(header-menu),
-::view-transition-group(footer-menu) {
-  animation: none !important;
+/* Persist cursor pointer of menu items during transition */
+:active-view-transition {
+  cursor: pointer;
 }
 
-/* Page content transition styles */
+/* Disable pointer events on the default view-transition layer */
+::view-transition {
+  pointer-events: none;
+}
+
+/* Prevent root element from being captured in transition */
+:root {
+  view-transition-name: none;
+}
+
+/* Outgoing page-content (old snapshot) */
 ::view-transition-old(page-content) {
+  animation: slide-out-left 1.2s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+  pointer-events: none; /* Pass clicks through */
   z-index: 1;
 }
 
+/* Incoming page-content (new snapshot) */
 ::view-transition-new(page-content) {
+  animation: slide-in-right 1.2s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+  pointer-events: none; /* Pass clicks through */
   z-index: 2;
 }
 
+/* Optimise page content snapshot layers */
 ::view-transition-image-pair(page-content) {
   isolation: isolate;
-  will-change: transform; /* optimize for transform animations */
+  will-change: transform;
 }
 
-/* Header and footer transition styles */
-/* Keep header & footer fixed above page content layers */
-::view-transition-group(header-menu),
-::view-transition-group(footer-menu) {
-  z-index: 100;
+/* Keyframes for sliding animations */
+@keyframes slide-out-left {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-100%);
+    opacity: 0.5; /* dim old content */
+  }
 }
 
-/* Show only new header/footer snapshot to avoid double rendering */
-::view-transition-old(header-menu),
-::view-transition-old(footer-menu) {
-  opacity: 0;
-}
-
-::view-transition-new(header-menu),
-::view-transition-new(footer-menu) {
-  opacity: 1;
-}
-
-::view-transition-image-pair(header-menu),
-::view-transition-image-pair(footer-menu) {
-  will-change: opacity; /* optimize opacity transitions */
+@keyframes slide-in-right {
+  from {
+    transform: translateX(100%);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
