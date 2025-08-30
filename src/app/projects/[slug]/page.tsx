@@ -8,7 +8,10 @@ import { BlockData } from '@/types/block';
 import BlockRenderer from '@/components/BlockRenderer';
 import { notFound } from 'next/navigation';
 
+export const revalidate = 60; // ISR: revalidate this page every 60 seconds
+
 export async function generateStaticParams() {
+  // Pre-generate static paths for all project detail pages
   const {
     projects: { nodes },
   }: GetAllProjectSlugsResponse = await client.request(GET_ALL_PROJECT_SLUGS);
@@ -19,6 +22,7 @@ export async function generateStaticParams() {
 export default async function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
 
+  // Fetch project by slug
   const variables: QueryVariables<IdTypeEnum> = {
     id: slug,
     idType: IdTypeEnum.SLUG,
@@ -30,9 +34,10 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
   );
 
   if (!project) {
-    notFound();
+    notFound(); // Show 404 if project not found in CMS
   }
 
+  // Normalise blocks so BlockRenderer can handle them consistently
   const blocks: BlockData[] = normaliseBlocks(project);
 
   return <BlockRenderer blocks={blocks} />;

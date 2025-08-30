@@ -1,7 +1,8 @@
-import { HeroBlock, BlockData } from './block';
+import { HeroBlock, BlockData, VideoGalleryBlock } from '@/types/block';
 
 export interface PageProps {
   heroBlock?: HeroBlock;
+  videoGalleryBlock?: VideoGalleryBlock;
   title: string;
   editorBlocks: BlockData[];
 }
