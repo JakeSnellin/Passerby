@@ -1,3 +1,4 @@
+import { VideoNode } from '@/types/video';
 import type { ComponentType } from 'react';
 import { ReactNode } from 'react';
 
@@ -22,6 +23,13 @@ export interface ProjectOverviewBlock {
     overviewBodyText: string;
     optionalTaskSubheading?: string;
     optionalTaskBodyText?: string;
+  };
+}
+
+export interface VideoGalleryBlock {
+  __typename: 'VideoGalleryBlock';
+  videos: {
+    nodes: VideoNode[];
   };
 }
 
@@ -177,7 +185,8 @@ export type BlockData =
   | CoreSpacerBlock
   | CoreVideoBlock
   | HeroBlock
-  | ProjectOverviewBlock;
+  | ProjectOverviewBlock
+  | VideoGalleryBlock;
 
 type BlockTypeMap = {
   [K in BlockData as K['__typename']]: K;
