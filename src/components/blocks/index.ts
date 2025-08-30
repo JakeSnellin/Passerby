@@ -18,4 +18,5 @@ export const blockComponentsMap: BlockComponentsMap = {
   CoreSpacer: dynamic(() => import('./Spacer')),
   CoreVideo: dynamic(() => import('./Video')),
   CoreImage: dynamic(() => import('./Image')),
+  VideoGalleryBlock: dynamic(() => import('./VideoGallery')),
 };
