@@ -3,7 +3,8 @@
 import React, { ReactNode } from 'react';
 import Link, { LinkProps } from 'next/link';
 import { useTransitionRouter } from 'next-view-transitions';
-import { usePathname } from 'next/navigation';
+import { usePathname, useParams } from 'next/navigation';
+import { stripSlash } from '@/lib/utils/stripSlash';
 
 interface TransitionLinkProps extends LinkProps {
   children: ReactNode;
@@ -18,9 +19,20 @@ export default function TransitionLink({
   ...props
 }: TransitionLinkProps) {
   const router = useTransitionRouter();
-  const pathName = usePathname();
+  const currentPath = usePathname();
+  const params = useParams();
+
   const prefersReducedMotion =
     typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Build the final href (with creator slug if applicable)
+  const finalHref = (() => {
+    if (params.creator) {
+      if (href === '/') return `/${params.creator}/`;
+      if (href.startsWith('/')) return `/${params.creator}${href}`;
+    }
+    return href;
+  })();
 
   const clickHandler: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
     if (
@@ -36,22 +48,19 @@ export default function TransitionLink({
 
     e.preventDefault();
 
-    const normalisedHref = href.replace(/\/$/, '');
-    const normalisedPath = pathName.replace(/\/$/, '');
-
-    if (normalisedHref === normalisedPath) return;
+    if (stripSlash(finalHref) === stripSlash(currentPath)) return;
 
     const supportsViewTransition = 'startViewTransition' in document;
 
     if (supportsViewTransition && !prefersReducedMotion) {
-      document.startViewTransition(() => router.push(href));
+      document.startViewTransition(() => router.push(finalHref));
     } else {
-      router.push(href);
+      router.push(finalHref);
     }
   };
 
   return (
-    <Link href={href} {...props} aria-label={ariaLabel} onClick={clickHandler}>
+    <Link href={finalHref} {...props} aria-label={ariaLabel} onClick={clickHandler}>
       {children}
     </Link>
   );
