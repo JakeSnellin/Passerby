@@ -1,8 +1,9 @@
 import { Menu } from '@/types/layout';
-import TransitionLink from '../TransitionLink';
+import TransitionLink from '@/components/TransitionLink';
 
 export default function Header(menu: Menu) {
   const { slug, items } = menu;
+
   return (
     <ul className={slug}>
       {items.map((item) => (
