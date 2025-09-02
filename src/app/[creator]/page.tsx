@@ -21,11 +21,11 @@ export async function generateStaticParams() {
   }: GetAllCreatorSlugsResponse = await client.request(GET_ALL_CREATOR_SLUGS);
 
   // Return params in the format expected by Next.js [slug] route
-  return nodes.map((node) => ({ slug: node.slug }));
+  return nodes.map((node) => ({ creator: node.slug }));
 }
 
-export default async function CreatorPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
+export default async function CreatorPage({ params }: { params: Promise<{ creator: string }> }) {
+  const { creator: creatorSlug } = await params;
 
   // Always fetch the home page (`/`) blocks — this acts as a shared layout/template
   const variables: QueryVariables<IdTypeEnum> = {
@@ -41,7 +41,7 @@ export default async function CreatorPage({ params }: { params: Promise<{ slug: 
 
   // Fetch all videos for the given creator
   const { creator }: GetVideosByCreatorResponse = await client.request(GET_VIDEOS_BY_CREATOR_SLUG, {
-    slug,
+    slug: creatorSlug,
   });
 
   if (!creator) {
