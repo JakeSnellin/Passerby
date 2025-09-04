@@ -7,6 +7,7 @@ export interface ThumbnailNode {
 // Custom video fields
 export interface VideoFields {
   __typename: 'VideoFields';
+  projectSlug: string;
   videoUrl: string;
   thumbnail: {
     node: ThumbnailNode;
