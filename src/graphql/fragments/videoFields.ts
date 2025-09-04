@@ -4,6 +4,7 @@ export const VIDEO_FIELDS_FRAGMENT = gql`
   fragment VideoCPTFields on Video {
     videoFields {
       __typename
+      projectSlug
       videoUrl
       thumbnail {
         node {

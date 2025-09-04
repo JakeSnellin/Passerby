@@ -11,8 +11,11 @@
 @use '@/styles/base/typography' as *;
 @use '@/styles/base/layout' as *;
 
-// Component styles
-@use '@/styles/components/hero' as *;
+// Component block styles
+@use '@/styles/components/blocks/hero' as *;
+@use '@/styles/components/blocks/video' as *;
+
+// Component layout styles
 @use '@/styles/components/header' as *;
 @use '@/styles/components/footer' as *;
 
