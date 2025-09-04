@@ -1,36 +1,32 @@
 import BlockRenderer from '@/components/BlockRenderer';
 import { GET_FRONT_PAGE_BY_SLUG } from '@/graphql/queries/getFrontPageBySlug';
+import { GET_ALL_CREATOR_SLUGS } from '@/graphql/queries/getAllCreatorSlugs';
+import { GET_VIDEOS_BY_CREATOR_SLUG } from '@/graphql/queries/getVideosByCreatorSlug';
 import { client } from '@/lib/graphql/client';
 import { normaliseBlocks } from '@/lib/utils/normaliseBlocks';
-import { GetPageBySlugResponse } from '@/types/page';
-import { notFound } from 'next/navigation';
-import { BlockData } from '@/types/block';
-import { QueryVariables, IdTypeEnum } from '@/types/graphql';
-import { GetVideosByCreatorResponse, VideoNode, GetAllCreatorSlugsResponse } from '@/types/video';
-import { GET_VIDEOS_BY_CREATOR_SLUG } from '@/graphql/queries/getVideosByCreatorSlug';
-import { GET_ALL_CREATOR_SLUGS } from '@/graphql/queries/getAllCreatorSlugs';
 import { injectIntoBlocks } from '@/lib/utils/injectIntoBlocks';
+import { notFound } from 'next/navigation';
+import { QueryVariables, IdTypeEnum } from '@/types/graphql';
+import { GetPageBySlugResponse } from '@/types/page';
+import { GetAllCreatorSlugsResponse, GetVideosByCreatorResponse, VideoNode } from '@/types/video';
+import { BlockData } from '@/types/block';
 
 export const revalidate = 60; // ISR: revalidate this page every 60 seconds
 
 export default async function Projects() {
-  // Fetch the home page blocks as a base layout/template
+  // Fetch home page blocks
   const variables: QueryVariables<IdTypeEnum> = {
     id: '/',
     idType: IdTypeEnum.URI,
   };
 
   const { page }: GetPageBySlugResponse = await client.request(GET_FRONT_PAGE_BY_SLUG, variables);
+  if (!page) notFound();
 
-  if (!page) {
-    notFound(); // Show 404 if home page not found in CMS
-  }
-
-  // Get all creator slugs (e.g. jake, tom)
+  // Get all creator slugs
   const {
     creators: { nodes },
   }: GetAllCreatorSlugsResponse = await client.request(GET_ALL_CREATOR_SLUGS);
-
   const slugs = nodes.map((node) => node.slug);
 
   // Fetch videos for each creator in parallel
@@ -40,25 +36,37 @@ export default async function Projects() {
     ),
   );
 
-  // Flatten all creator video lists into one array
-  const allVideos: VideoNode[] = videosByCreator.flatMap((resp) => resp.creator.videos.nodes);
+  // Compute intersection of video IDs (videos shared by all creators)
+  const videoIdsByCreator: string[][] = videosByCreator.map((resp) =>
+    resp.creator.videos.nodes.map((v) => v.id),
+  );
 
-  // Deduplicate videos (in case a video is shared by multiple creators)
+  const sharedVideoIds = videoIdsByCreator.length
+    ? videoIdsByCreator.reduce((a, b) => a.filter((id) => b.includes(id)))
+    : [];
+
+  // Flatten all videos
+  const allVideosFlat: VideoNode[] = videosByCreator.flatMap((resp) => resp.creator.videos.nodes);
+
+  // Keep only shared videos
+  const sharedVideos = allVideosFlat.filter((video) => sharedVideoIds.includes(video.id));
+
+  // Deduplicate by ID
   const seenIds = new Set<string>();
-  const filteredVideos = allVideos.filter((video: VideoNode) => {
-    if (seenIds.has(video.id)) {
-      return false; // exclude duplicates
+  const filteredVideos: VideoNode[] = [];
+  for (const video of sharedVideos) {
+    if (!seenIds.has(video.id)) {
+      seenIds.add(video.id);
+      filteredVideos.push(video);
     }
-    seenIds.add(video.id);
-    return true; // include first occurrence
-  });
+  }
 
-  // Normalise page blocks into consistent internal format
+  // Normalise page blocks
   const blocks: BlockData[] = normaliseBlocks(page);
 
-  // Inject the filtered video list into the VideoGalleryBlock
+  // Inject filtered videos into VideoGalleryBlock
   const updatedBlocks = injectIntoBlocks(blocks, { nodes: filteredVideos });
 
-  // Render final block tree including videos
+  // Render all blocks
   return <BlockRenderer blocks={updatedBlocks} />;
 }

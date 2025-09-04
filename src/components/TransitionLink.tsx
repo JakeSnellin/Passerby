@@ -1,38 +1,29 @@
 'use client';
 
-import React, { ReactNode } from 'react';
+import { buildHref } from '@/lib/utils/buildHref';
 import Link, { LinkProps } from 'next/link';
 import { useTransitionRouter } from 'next-view-transitions';
 import { usePathname, useParams } from 'next/navigation';
-import { stripSlash } from '@/lib/utils/stripSlash';
+import { ReactNode } from 'react';
 
 interface TransitionLinkProps extends LinkProps {
-  children: ReactNode;
-  href: string;
+  children?: ReactNode;
   ariaLabel?: string;
+  className?: string;
 }
 
 export default function TransitionLink({
   href,
   children,
-  ariaLabel,
+  className,
   ...props
 }: TransitionLinkProps) {
   const router = useTransitionRouter();
   const currentPath = usePathname();
   const params = useParams();
 
-  const prefersReducedMotion =
-    typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  // Build the final href (with creator slug if applicable)
-  const finalHref = (() => {
-    if (params.creator) {
-      if (href === '/') return `/${params.creator}/`;
-      if (href.startsWith('/')) return `/${params.creator}${href}`;
-    }
-    return href;
-  })();
+  const creator = typeof params.creator === 'string' ? params.creator : undefined;
+  const finalHref = buildHref(href.toString(), creator);
 
   const clickHandler: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
     if (
@@ -47,20 +38,22 @@ export default function TransitionLink({
       return;
 
     e.preventDefault();
-
-    if (stripSlash(finalHref) === stripSlash(currentPath)) return;
+    if (finalHref === currentPath) return;
 
     const supportsViewTransition = 'startViewTransition' in document;
+    const prefersReducedMotion =
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     if (supportsViewTransition && !prefersReducedMotion) {
-      document.startViewTransition(() => router.push(finalHref));
+      document.startViewTransition(() => router.push(finalHref, { scroll: false }));
     } else {
-      router.push(finalHref);
+      router.push(finalHref, { scroll: false });
     }
   };
 
   return (
-    <Link href={finalHref} {...props} aria-label={ariaLabel} onClick={clickHandler}>
+    <Link scroll={false} className={className} href={finalHref} {...props} onClick={clickHandler}>
       {children}
     </Link>
   );
