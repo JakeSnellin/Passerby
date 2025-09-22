@@ -15,10 +15,11 @@ export default function VideoGallery({ videos: { nodes } }: VideoGalleryBlock) {
       <TransitionLink
         href={`${baseProjectsHref}/${node.videoFields.projectSlug}`}
         className="video-card__overlay"
-      />
-      <video src={node.videoFields.videoUrl} autoPlay muted loop playsInline preload="metadata">
-        Sorry, your browser doesn’t support embedded videos.
-      </video>
+      >
+        <video src={node.videoFields.videoUrl} autoPlay muted loop playsInline preload="metadata">
+          Sorry, your browser doesn’t support embedded videos.
+        </video>
+      </TransitionLink>
     </div>
   ));
 }

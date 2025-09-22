@@ -16,8 +16,8 @@
 @use '@/styles/components/blocks/video' as *;
 
 // Component layout styles
-@use '@/styles/components/header' as *;
-@use '@/styles/components/footer' as *;
+@use '@/styles/components/layout/header' as *;
+@use '@/styles/components/layout/footer' as *;
 
 // Animation styles
 @use '@/styles/animations/page-transition' as *;

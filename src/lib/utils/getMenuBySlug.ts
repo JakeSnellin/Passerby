@@ -1,6 +1,6 @@
 //General utility functions
 
-import { client } from '@/lib/graphql/client';
+/*import { client } from '@/lib/graphql/client';
 import { GET_MENU_BY_SLUG } from '@/graphql/queries/getMenuBySlug';
 import { Menu, RawMenu } from '@/types/layout';
 import { QueryVariables, IdTypeEnum } from '@/types/graphql';
@@ -23,4 +23,4 @@ export async function getMenuBySlug(slug: string): Promise<Menu> {
   };
 
   return menu;
-}
+}*/
