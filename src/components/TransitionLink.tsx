@@ -4,9 +4,11 @@ import { buildHref } from '@/lib/utils/buildHref';
 import Link, { LinkProps } from 'next/link';
 import { useTransitionRouter } from 'next-view-transitions';
 import { usePathname, useParams } from 'next/navigation';
-import { ReactNode } from 'react';
+import { AnchorHTMLAttributes, ReactNode } from 'react';
 
-interface TransitionLinkProps extends LinkProps {
+interface TransitionLinkProps
+  extends LinkProps,
+    Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'href'> {
   children?: ReactNode;
   ariaLabel?: string;
   className?: string;
@@ -46,14 +48,14 @@ export default function TransitionLink({
       window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     if (supportsViewTransition && !prefersReducedMotion) {
-      document.startViewTransition(() => router.push(finalHref, { scroll: false }));
+      document.startViewTransition(() => router.push(finalHref));
     } else {
-      router.push(finalHref, { scroll: false });
+      router.push(finalHref);
     }
   };
 
   return (
-    <Link scroll={false} className={className} href={finalHref} {...props} onClick={clickHandler}>
+    <Link className={className} href={finalHref} {...props} onClick={clickHandler}>
       {children}
     </Link>
   );

@@ -1,26 +1,18 @@
-export interface RawMenu {
-  menu: {
-    id: string;
-    name: string;
-    slug: string;
-    menuItems: {
-      nodes: MenuItem[];
-    };
-  };
-}
-
 export interface MenuItem {
   id: string;
   url: string;
-  path: string;
-  cssClasses: string[];
   label: string;
-  parentId: string | null;
 }
 
-export interface Menu {
+export interface CustomLogo {
   id: string;
-  name: string;
-  slug: string;
-  items: MenuItem[];
+  url: string;
+  alt: string;
+}
+
+export interface SiteInfo {
+  headerMenuLabel: string;
+  customLogo: CustomLogo | null;
+  headerMenu: MenuItem[];
+  footerMenu: MenuItem[];
 }
