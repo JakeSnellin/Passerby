@@ -1,6 +1,6 @@
 import { BlockData } from '@/types/block';
 import { PageProps } from '@/types/page';
-import { ProjectProps } from '@/app/projects/[slug]/types';
+import { ProjectProps } from '@/types/project';
 import { collectInnerBlocks } from './collectInnerBlocks';
 import { isBlockEqual } from './isBlockEqual';
 

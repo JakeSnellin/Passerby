@@ -14,7 +14,7 @@ export async function generateStaticParams() {
   return nodes.map((node) => ({ slug: node.slug }));
 }
 
-export default async function ProjectPage({ params }: { params: { slug: string | string[] } }) {
-  const slug = Array.isArray(params.slug) ? params.slug[params.slug.length - 1] : params.slug;
+export default async function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
   return fetchAndRenderProject(slug);
 }

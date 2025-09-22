@@ -24,7 +24,7 @@
 ::view-transition-new(page-content) {
   animation: slide-in-right 1.2s cubic-bezier(0.65, 0, 0.35, 1) forwards;
   pointer-events: none; /* Pass clicks through */
-  z-index: 2;
+  z-index: 0;
 }
 
 /* Optimise page content snapshot layers */

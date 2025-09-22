@@ -1,7 +1,8 @@
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import { getMenuBySlug } from '@/lib/utils/getMenuBySlug';
-import { Menu } from '@/types/layout';
+import { GET_SITE_INFO } from '@/graphql/queries/getSiteInfo';
+import { client } from '@/lib/graphql/client';
+import { SiteInfo } from '@/types/layout';
 import '@/styles/main.scss';
 import { ViewTransitions } from 'next-view-transitions';
 
@@ -16,9 +17,7 @@ export const metadata = {
   description:
     'A modern, performant agency website built with Next.js, powered by a headless WordPress backend',
   charset: 'UTF-8',
-  icons: {
-    icon: '/favicon.ico',
-  },
+  icons: { icon: '/favicon.ico' },
   openGraph: {
     title: 'Passerby Site',
     description:
@@ -27,7 +26,7 @@ export const metadata = {
     siteName: 'Passerby Site',
     images: [
       {
-        url: 'https://', //todo
+        url: 'https://', // TODO: update with real image
         width: 1200,
         height: 630,
         alt: 'Passerby Site',
@@ -38,23 +37,19 @@ export const metadata = {
   },
 };
 
-export default async function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  const [headerData, footerData]: [Menu, Menu] = await Promise.all([
-    getMenuBySlug('header-menu'),
-    getMenuBySlug('footer-menu'),
-  ]);
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  // Fetch global site info
+  const { customLogo, headerMenu, footerMenu, headerMenuLabel }: SiteInfo = await client.request(
+    GET_SITE_INFO,
+  );
 
   return (
     <ViewTransitions>
       <html lang="en">
         <body>
-          <Header {...headerData} />
+          <Header customLogo={customLogo} menu={headerMenu} label={headerMenuLabel} />
           <main className="page-content">{children}</main>
-          <Footer {...footerData} />
+          <Footer customLogo={customLogo} menu={footerMenu} />
         </body>
       </html>
     </ViewTransitions>

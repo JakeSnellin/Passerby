@@ -1,18 +1,117 @@
-.header-menu {
+@use '@/styles/abstracts/variables' as *;
+@use '@/styles/abstracts/mixins' as *;
+@use '@/styles/base/typography' as *;
+
+@use 'sass:map';
+
+header {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
-  gap: 16px;
-  padding: 20px;
   z-index: 100;
+  width: 100%;
   view-transition-name: header-menu;
 }
 
-.header-menu li,
-.header-menu li a {
+.header-bar__logo {
+  display: block;
+  width: $logo-width-sm;
+  height: $logo-height-sm;
+}
+
+.header-bar__nav {
+  display: none;
+}
+
+.header-bar__list {
+  display: flex;
+  gap: $header-bar-gap-x;
+}
+
+.navigation-drawer {
+  display: none;
+}
+
+.header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: $header-bar-padding-y $header-bar-padding-x;
+}
+
+.header-bar__toggle {
   cursor: pointer;
-  pointer-events: auto;
+}
+
+.header-bar__link {
+  display: block;
+  position: relative;
+  overflow: hidden; // clip sliding text
+  padding: $btn-padding-y $btn-padding-x;
+  border-radius: $btn-radius;
+  @include button-state-map($btn-state-bg-color);
+  @include letter-spacing(map.get($letter-spacings, 0));
+  @include font-size(map.get($font-sizes, button), desktop);
+  @include font-weight(map.get($font-weights, 300));
+  @include line-height(map.get($line-heights, 100));
+  font-family: 'LabGrotesque';
+}
+
+.header-bar__link-text-wrapper {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+/* Old text keeps button shape */
+.header-bar__link-text--old {
+  display: inline-block;
+  position: relative;
+  z-index: 1;
+  /*transition: transform 0.65s cubic-bezier(0.34, 1.56, 0.64, 1),
+    // slower + springy
+    opacity 0.55s ease; // fades out a little slower*/
+  transform: translateX(0);
+  //opacity: 1;
+}
+
+/* New text slides in from the right */
+.header-bar__link-text--new {
+  position: absolute;
+  top: 0;
+  left: 0; // align with wrapper
+  white-space: nowrap;
+  z-index: 2;
+  transform: translateX(calc(100% + #{$btn-padding-x})); // start offscreen right
+  /*transition: transform 0.65s cubic-bezier(0.34, 1.56, 0.64, 1),
+    // slower + springy
+    opacity 0.55s ease; // fades out a little slower*/
+  //opacity: 0;
+}
+
+/* Hover states */
+/*.header-bar__link:hover .header-bar__link-text--old {
+  transform: translateX(calc(-100% - #{$btn-padding-x})); // slide left
+  opacity: 0;
+}
+
+.header-bar__link:hover .header-bar__link-text--new {
+  transform: translateX(0); // slide into view
+  opacity: 1;
+}*/
+
+@media only screen and (min-width: 834px) {
+  .header-bar__toggle {
+    display: none;
+  }
+
+  .header-bar__logo {
+    display: block;
+    width: $logo-width-md;
+    height: $logo-height-md;
+  }
+
+  .header-bar__nav {
+    display: block;
+  }
 }

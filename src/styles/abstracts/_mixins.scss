@@ -1,32 +1,22 @@
 @use '@/styles/abstracts/functions' as *;
 @use '@/styles/base/typography' as *;
+@use '@/styles/abstracts/variables' as *;
 @use 'sass:map';
 
-@mixin button-state(
-  $bg: transparent,
-  $color: null,
-  $border-color: null,
-  $hover-opacity: 0.4,
-  $active-opacity: 0.4
-) {
-  background-color: $bg;
-  color: $color;
-  @if $border-color {
-    border-color: $border-color;
-  }
+@mixin button-state-map($state-map) {
+  background-color: transparent;
 
   &:hover {
-    background-color: fade($bg, $hover-opacity);
-    color: $color;
+    background-color: map.get($state-map, hover);
   }
 
   &:active {
-    background-color: fade($bg, $active-opacity);
-    color: fade($color, 0.4);
+    background-color: map.get($state-map, active);
+    color: $btn-state-color;
   }
 
   &.is-selected {
-    background-color: $bg;
+    background-color: map.get($state-map, selected);
   }
 }
 
