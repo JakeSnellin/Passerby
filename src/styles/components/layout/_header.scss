@@ -10,7 +10,6 @@ header {
   left: 0;
   z-index: 100;
   width: 100%;
-  view-transition-name: header-menu;
 }
 
 .header-bar__logo {
@@ -68,11 +67,11 @@ header {
   display: inline-block;
   position: relative;
   z-index: 1;
-  /*transition: transform 0.65s cubic-bezier(0.34, 1.56, 0.64, 1),
+  transition: transform 0.65s cubic-bezier(0.34, 1.56, 0.64, 1),
     // slower + springy
     opacity 0.55s ease; // fades out a little slower*/
   transform: translateX(0);
-  //opacity: 1;
+  opacity: 1;
 }
 
 /* New text slides in from the right */
@@ -83,14 +82,14 @@ header {
   white-space: nowrap;
   z-index: 2;
   transform: translateX(calc(100% + #{$btn-padding-x})); // start offscreen right
-  /*transition: transform 0.65s cubic-bezier(0.34, 1.56, 0.64, 1),
+  transition: transform 0.65s cubic-bezier(0.34, 1.56, 0.64, 1),
     // slower + springy
     opacity 0.55s ease; // fades out a little slower*/
-  //opacity: 0;
+  opacity: 0;
 }
 
 /* Hover states */
-/*.header-bar__link:hover .header-bar__link-text--old {
+.header-bar__link:hover .header-bar__link-text--old {
   transform: translateX(calc(-100% - #{$btn-padding-x})); // slide left
   opacity: 0;
 }
@@ -98,7 +97,7 @@ header {
 .header-bar__link:hover .header-bar__link-text--new {
   transform: translateX(0); // slide into view
   opacity: 1;
-}*/
+}
 
 @media only screen and (min-width: 834px) {
   .header-bar__toggle {
