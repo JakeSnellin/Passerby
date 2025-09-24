@@ -2,7 +2,7 @@
 
 import { buildHref } from '@/lib/utils/buildHref';
 import Link, { LinkProps } from 'next/link';
-import { useTransitionRouter } from 'next-view-transitions';
+import { useRouter } from 'next/navigation';
 import { usePathname, useParams } from 'next/navigation';
 import { AnchorHTMLAttributes, ReactNode } from 'react';
 
@@ -20,7 +20,7 @@ export default function TransitionLink({
   className,
   ...props
 }: TransitionLinkProps) {
-  const router = useTransitionRouter();
+  const router = useRouter();
   const currentPath = usePathname();
   const params = useParams();
 
@@ -42,16 +42,7 @@ export default function TransitionLink({
     e.preventDefault();
     if (finalHref === currentPath) return;
 
-    const supportsViewTransition = 'startViewTransition' in document;
-    const prefersReducedMotion =
-      typeof window !== 'undefined' &&
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    if (supportsViewTransition && !prefersReducedMotion) {
-      document.startViewTransition(() => router.push(finalHref));
-    } else {
-      router.push(finalHref);
-    }
+    router.push(finalHref);
   };
 
   return (
