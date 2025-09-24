@@ -28,7 +28,7 @@ const PageTransitionEffect = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <div className="page-container">
-      <AnimatePresence mode="sync">
+      <AnimatePresence mode="sync" initial={false}>
         <motion.div
           key={key}
           initial="hidden"
