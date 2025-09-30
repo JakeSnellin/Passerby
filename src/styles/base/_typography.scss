@@ -4,19 +4,27 @@ $font-sizes: (
     mobile: 16px,
   ),
 
-  logo: (
+  hero-heading-1: (
     desktop: 30px,
+    tablet: 25px,
     mobile: 22px,
   ),
 
-  logo-sm: (
-    desktop: 24px,
-    mobile: 20px,
+  hero-heading-2: (
+    mobile: 10px,
+    tablet: 13px,
+    desktop: 16px,
+  ),
+
+  hero-description: (
+    mobile: 16px,
+    tablet: 22px,
+    desktop: 22px,
   ),
 
   section-title: (
-    desktop: 16px,
     mobile: 14px,
+    desktop: 16px,
   ),
 
   body-sm: (

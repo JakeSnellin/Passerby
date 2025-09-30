@@ -1,11 +1,103 @@
 @use '@/styles/abstracts/mixins' as *;
 @use '@/styles/base/typography' as *;
+@use '@/styles/abstracts/variables' as *;
+@use '@/styles/abstracts/functions' as *;
 @use 'sass:map';
 
-.logo__text {
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  grid-column: 1 / -1;
+  padding-inline: 10px; // 10px from the page margin
+  margin-top: $hero-margin-top-sm;
+  margin-bottom: $hero-margin-bottom-sm;
+}
+
+.hero__logo {
+  $hero-mobile-logo: get-logo(hero-logo, mobile);
+  width: map.get($hero-mobile-logo, width);
+  height: map.get($hero-mobile-logo, height);
+  margin-bottom: 0.625rem;
+}
+
+.hero__subtitle {
+  font-family: 'Fahkwang';
+  @include letter-spacing(map.get($letter-spacings, 50));
+  @include font-size(map.get($font-sizes, hero-heading-2), mobile);
+  @include font-weight(map.get($font-weights, 275));
+  @include line-height(map.get($line-heights, 160));
+  margin-bottom: get-spacer(38);
+}
+
+.hero__description {
+  font-family: 'Fahkwang';
+  @include letter-spacing(map.get($letter-spacings, 9));
+  @include font-size(map.get($font-sizes, hero-description), mobile);
+  @include font-weight(map.get($font-weights, 275));
+  @include line-height(map.get($line-heights, 142));
+  text-align: center;
+  max-width: clamp(50ch, 10ch + 50vw, 70ch);
+}
+
+.hero__title {
   font-family: 'JejuMyeongjo';
   @include letter-spacing(map.get($letter-spacings, 9));
-  @include font-size(map.get($font-sizes, logo), mobile);
+  @include font-size(map.get($font-sizes, hero-heading-1), mobile);
   @include font-weight(map.get($font-weights, 400));
   @include line-height(map.get($line-heights, 142));
+  margin-bottom: get-spacer(12);
+}
+
+@media only screen and (min-width: 834px) {
+  .hero {
+    grid-column: 2 / -2;
+    margin-top: $hero-margin-top-md;
+    margin-bottom: $hero-margin-bottom-md;
+  }
+
+  .hero__logo {
+    $hero-tablet-logo: get-logo(hero-logo, tablet);
+    width: map.get($hero-tablet-logo, width);
+    height: map.get($hero-tablet-logo, height);
+  }
+
+  .hero__title {
+    @include font-size(map.get($font-sizes, hero-heading-1), tablet);
+  }
+
+  .hero__subtitle {
+    @include font-size(map.get($font-sizes, hero-heading-2), tablet);
+    margin-bottom: get-spacer(52);
+  }
+
+  .hero__description {
+    @include font-size(map.get($font-sizes, hero-description), tablet);
+  }
+}
+
+@media only screen and (min-width: 1440px) {
+  .hero {
+    grid-column: 4 / -4;
+    margin-top: $hero-margin-top-lg;
+    margin-bottom: $hero-margin-bottom-lg;
+  }
+
+  .hero__logo {
+    $hero-desktop-logo: get-logo(hero-logo, desktop);
+    width: map.get($hero-desktop-logo, width);
+    height: map.get($hero-desktop-logo, height);
+  }
+
+  .hero__title {
+    @include font-size(map.get($font-sizes, hero-heading-1), desktop);
+  }
+
+  .hero__subtitle {
+    @include font-size(map.get($font-sizes, hero-heading-2), desktop);
+  }
+
+  .hero__description {
+    @include font-size(map.get($font-sizes, hero-description), desktop);
+  }
 }

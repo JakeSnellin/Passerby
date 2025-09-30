@@ -5,9 +5,11 @@ import { ReactNode } from 'react';
 // ACF blocks
 export interface HeroBlock {
   __typename: 'HeroBlock';
-  logoImage: {
-    altText: string;
-    sourceUrl: string;
+  logoImage?: {
+    node: {
+      altText: string;
+      sourceUrl: string;
+    };
   };
   titleText: string;
   subtitleText: string;

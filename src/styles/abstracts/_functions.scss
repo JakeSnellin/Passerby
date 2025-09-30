@@ -1,10 +1,25 @@
+@use '@/styles/abstracts/variables' as *;
+@use 'sass:map';
+
 @function get-spacer($size) {
-  @if map-has-key($spacers, $size) {
-    @return map-get($spacers, $size);
+  @if map.has-key($spacers, $size) {
+    @return map.get($spacers, $size);
   } @else {
     @warn "Spacer size `#{$size}` not found in \$spacers map.";
     @return null;
   }
+}
+
+@function get-logo($type, $breakpoint) {
+  @if map.has-key($logos, $type) {
+    $logo-type: map.get($logos, $type);
+
+    @if map.has-key($logo-type, $breakpoint) {
+      @return map.get($logo-type, $breakpoint);
+    }
+  }
+
+  @error "Logo type `#{$type}` or breakpoint `#{$breakpoint}` not found in $logos.";
 }
 
 @function fade($color, $opacity) {

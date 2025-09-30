@@ -17,6 +17,8 @@ $spacers: (
   // 38px
   46: 2.875rem,
   // 46px
+  52: 3.25rem,
+  //52px
   56: 3.5rem,
   // 56px
   60: 3.75rem,
@@ -31,13 +33,45 @@ $spacers: (
   // 120px
   148: 9.25rem,
   // 148px
-  172: 10.75rem // 172px,,,,,,,,,,,,,,,
+  172: 10.75rem // 172px,,,,
 );
 
 $btn-state-bg-color: (
   hover: rgba(233, 230, 206, 0.4),
   selected: rgba(233, 230, 206, 1),
   active: rgba(233, 230, 206, 0.4),
+);
+
+$logos: (
+  nav-logo: (
+    mobile: (
+      width: 1.875rem,
+      height: 2.063rem,
+    ),
+    tablet: (
+      width: 2.438rem,
+      height: 2.688rem,
+    ),
+    desktop: (
+      width: 3.063rem,
+      height: 3.313rem,
+    ),
+  ),
+
+  hero-logo: (
+    mobile: (
+      width: 3.313rem,
+      height: 3.625rem,
+    ),
+    tablet: (
+      width: 3.75rem,
+      height: 4.063rem,
+    ),
+    desktop: (
+      width: 4.375rem,
+      height: 4.813rem,
+    ),
+  ),
 );
 
 $btn-state-color: rgba(0, 0, 0, 0.5);
@@ -50,8 +84,10 @@ $header-bar-padding-y: 1.5rem;
 $header-bar-padding-x: 1.25rem;
 $header-bar-gap-x: 2.438rem;
 
-$logo-height-sm: 2.063rem;
-$logo-width-sm: 1.875rem;
+$hero-margin-top-sm: 4.563rem;
+$hero-margin-top-md: 7.188rem;
+$hero-margin-top-lg: 7.5rem;
 
-$logo-height-md: 2.688rem;
-$logo-width-md: 2.438rem;
+$hero-margin-bottom-sm: 3.125rem;
+$hero-margin-bottom-md: 9.188rem;
+$hero-margin-bottom-lg: 10.813rem;
