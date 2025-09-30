@@ -3,6 +3,10 @@ body {
 }
 
 .page-content {
+  padding-inline: 1rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
   position: absolute; /* <-- absolute so pages overlap */
   //top: 91px; /* offset for fixed header */
   padding-top: 91px;
@@ -10,12 +14,27 @@ body {
   width: 100vw; // match container width exactly
   min-height: 100vh;
   background: rgba(255, 254, 246, 1);
-  overflow: hidden;
+  grid-auto-rows: min-content; // rows shrink to fit content
 }
 
 .page-container {
   position: relative;
   width: 100vw; // full viewport width
-  height: 100vh; // full viewport height
-  overflow: hidden;
+  min-height: 100vh; // ensures at least full viewport height
+}
+
+@media only screen and (min-width: 834px) {
+  .page-content {
+    grid-template-columns: repeat(8, 1fr);
+    gap: 2rem;
+    padding-inline: 2rem;
+  }
+}
+
+@media only screen and (min-width: 1440px) {
+  .page-content {
+    grid-template-columns: repeat(12, 1fr);
+    gap: 2rem;
+    padding-inline: 4rem;
+  }
 }

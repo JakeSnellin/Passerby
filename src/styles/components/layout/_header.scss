@@ -1,6 +1,7 @@
 @use '@/styles/abstracts/variables' as *;
 @use '@/styles/abstracts/mixins' as *;
 @use '@/styles/base/typography' as *;
+@use '@/styles/abstracts/functions' as *;
 
 @use 'sass:map';
 
@@ -14,8 +15,9 @@ header {
 
 .header-bar__logo {
   display: block;
-  width: $logo-width-sm;
-  height: $logo-height-sm;
+  $nav-mobile-logo: get-logo(nav-logo, mobile);
+  width: map.get($nav-mobile-logo, width);
+  height: map.get($nav-mobile-logo, height);
 }
 
 .header-bar__nav {
@@ -106,11 +108,21 @@ header {
 
   .header-bar__logo {
     display: block;
-    width: $logo-width-md;
-    height: $logo-height-md;
+    $nav-tablet-logo: get-logo(nav-logo, tablet);
+    width: map.get($nav-tablet-logo, width);
+    height: map.get($nav-tablet-logo, height);
   }
 
   .header-bar__nav {
     display: block;
+  }
+}
+
+@media only screen and (min-width: 1440px) {
+  .header-bar__logo {
+    display: block;
+    $nav-desktop-logo: get-logo(nav-logo, desktop);
+    width: map.get($nav-desktop-logo, width);
+    height: map.get($nav-desktop-logo, height);
   }
 }
