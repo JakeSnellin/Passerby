@@ -5,6 +5,8 @@ import { client } from '@/lib/graphql/client';
 import { SiteInfo } from '@/types/layout';
 import PageTransitionEffect from '@/components/PageTransitionEffect';
 import '@/styles/main.scss';
+import { TransitionProvider } from '@/context/TransitionContext';
+import { LayoutRefsProvider } from '@/context/LayoutRefsContext';
 
 export const metadata = {
   title: 'Passerby Site',
@@ -21,14 +23,18 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en">
       <body>
-        {/* Static header */}
-        <Header customLogo={customLogo} menu={headerMenu} label={headerMenuLabel} />
+        <TransitionProvider>
+          <LayoutRefsProvider>
+            {/* Static header */}
+            <Header customLogo={customLogo} menu={headerMenu} label={headerMenuLabel} />
 
-        {/* Animated page content */}
-        <PageTransitionEffect>{children}</PageTransitionEffect>
+            {/* Animated page content */}
+            <PageTransitionEffect>{children}</PageTransitionEffect>
 
-        {/* Optional static footer */}
-        {/* <Footer customLogo={customLogo} menu={footerMenu} /> */}
+            {/* Optional static footer */}
+            {/* <Footer customLogo={customLogo} menu={footerMenu} /> */}
+          </LayoutRefsProvider>
+        </TransitionProvider>
       </body>
     </html>
   );
