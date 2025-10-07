@@ -1,16 +1,12 @@
 'use client';
 
-import { buildHref } from '@/lib/utils/buildHref';
+import { useTransitionLock } from '@/context/TransitionContext';
+import { useRouter, usePathname } from 'next/navigation';
 import Link, { LinkProps } from 'next/link';
-import { useRouter } from 'next/navigation';
-import { usePathname, useParams } from 'next/navigation';
-import { AnchorHTMLAttributes, ReactNode } from 'react';
+import { MouseEventHandler, ReactNode } from 'react';
 
-interface TransitionLinkProps
-  extends LinkProps,
-    Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'href'> {
-  children?: ReactNode;
-  ariaLabel?: string;
+interface TransitionLinkProps extends LinkProps {
+  children: ReactNode;
   className?: string;
 }
 
@@ -21,32 +17,46 @@ export default function TransitionLink({
   ...props
 }: TransitionLinkProps) {
   const router = useRouter();
-  const currentPath = usePathname();
-  const params = useParams();
+  const pathname = usePathname();
+  const { lockRef, startTransition } = useTransitionLock();
 
-  const creator = typeof params.creator === 'string' ? params.creator : undefined;
-  const finalHref = buildHref(href.toString(), creator);
-
-  const clickHandler: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
+  const handleClick: MouseEventHandler<HTMLAnchorElement> = (e) => {
+    // Ignore modifier clicks or middle clicks
     if (
-      e.defaultPrevented ||
       e.metaKey ||
       e.altKey ||
       e.ctrlKey ||
       e.shiftKey ||
       e.button !== 0 ||
       e.currentTarget.target === '_blank'
-    )
+    ) {
       return;
+    }
 
     e.preventDefault();
-    if (finalHref === currentPath) return;
 
-    router.push(finalHref);
+    // Don't navigate to the same page
+    if (pathname === href) return;
+
+    // Prevent clicks while a transition is already happening
+    if (lockRef.current) {
+      return;
+    }
+
+    // Lock immediately
+    lockRef.current = true;
+    startTransition();
+
+    // Navigate
+    router.push(href.toString(), { scroll: false });
+
+    setTimeout(() => {
+      lockRef.current = false;
+    }, 1200);
   };
 
   return (
-    <Link className={className} href={finalHref} {...props} onClick={clickHandler}>
+    <Link href={href} {...props} onClick={handleClick} className={className}>
       {children}
     </Link>
   );

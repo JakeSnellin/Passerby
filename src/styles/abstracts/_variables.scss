@@ -4,6 +4,8 @@ $spacers: (
   8: 0.5rem,
   // 8px
   12: 0.75rem,
+  //13
+  13: 0.813,
   // 12px
   16: 1rem,
   // 16px
@@ -20,6 +22,8 @@ $spacers: (
   52: 3.25rem,
   //52px
   56: 3.5rem,
+  //58px
+  58: 3.625rem,
   // 56px
   60: 3.75rem,
   // 60px
@@ -33,7 +37,7 @@ $spacers: (
   // 120px
   148: 9.25rem,
   // 148px
-  172: 10.75rem // 172px,,,,
+  172: 10.75rem // 172px,,,,,,,,,,,,,,
 );
 
 $btn-state-bg-color: (
@@ -41,6 +45,21 @@ $btn-state-bg-color: (
   selected: rgba(233, 230, 206, 1),
   active: rgba(233, 230, 206, 0.4),
 );
+
+/*$page-content-padding: (
+  mobile: (
+    padding-top:
+  ),
+
+  tablet: (
+        padding-top: 
+  )
+
+  desktop: (
+    padding-top: 
+
+  )
+)*/
 
 $logos: (
   nav-logo: (
@@ -62,14 +81,17 @@ $logos: (
     mobile: (
       width: 3.313rem,
       height: 3.625rem,
+      mb: 0.625rem,
     ),
     tablet: (
       width: 3.75rem,
       height: 4.063rem,
+      mb: 0.75rem,
     ),
     desktop: (
       width: 4.375rem,
       height: 4.813rem,
+      mb: 0.875rem,
     ),
   ),
 );
@@ -91,3 +113,16 @@ $hero-margin-top-lg: 7.5rem;
 $hero-margin-bottom-sm: 3.125rem;
 $hero-margin-bottom-md: 9.188rem;
 $hero-margin-bottom-lg: 10.813rem;
+
+$hero-content-pt-sm: 8.5rem;
+$hero-content-pb-sm: 3.125rem;
+
+$hero-content-pt-md: 12.875rem;
+$hero-content-pb-md: 9.188rem;
+
+$hero-content-pt-lg: 13.188rem;
+$hero-content-pb-lg: 2.5rem;
+
+$hero-height-sm: 16rem;
+$hero-height-md: 18.188rem;
+$hero-height-lg: 20.438rem;

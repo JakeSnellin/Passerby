@@ -1,6 +1,5 @@
 .video-card {
   position: relative;
-  grid-column: 1 / -1;
   aspect-ratio: 16 / 9; // modern way, keeps 640x360 ratio
   @supports not (aspect-ratio: 16 / 9) {
     padding-top: 56.25%; // 360 ÷ 640 = 0.5625 = 56.25%

@@ -3,8 +3,11 @@
 import { useEffect } from 'react';
 import { HeroBlock } from '@/types/block';
 import { motion, useAnimation } from 'framer-motion';
+import { useContext } from 'react';
+import { LayoutRefsContext } from '@/context/LayoutRefsContext';
 
 export default function Hero({ logoImage, titleText, subtitleText, descriptionText }: HeroBlock) {
+  const { heroRef } = useContext(LayoutRefsContext);
   const controls = useAnimation();
 
   useEffect(() => {
@@ -35,17 +38,22 @@ export default function Hero({ logoImage, titleText, subtitleText, descriptionTe
   const { sourceUrl = '', altText = 'Passerby logo' } = logoImage?.node ?? {};
 
   return (
-    <section className="hero" aria-label="Hero section">
-      {sourceUrl && (
-        <motion.div animate={controls} style={{ transformOrigin: '50% 50%' }}>
-          <img className="hero__logo" src={sourceUrl} alt={altText} width={53} height={58} />
-        </motion.div>
-      )}
-      <h1 className="hero__title">{titleText}</h1>
-      <h2 className="hero__subtitle">{subtitleText}</h2>
-      {descriptionText && (
-        <div className="hero__description" dangerouslySetInnerHTML={{ __html: descriptionText }} />
-      )}
+    <section ref={heroRef} className="hero" aria-label="Hero section">
+      <div className="hero__content">
+        {sourceUrl && (
+          <motion.div animate={controls} style={{ transformOrigin: '50% 50%' }}>
+            <img className="hero__logo" src={sourceUrl} alt={altText} width={53} height={58} />
+          </motion.div>
+        )}
+        <h1 className="hero__title">{titleText}</h1>
+        <h2 className="hero__subtitle">{subtitleText}</h2>
+        {descriptionText && (
+          <div
+            className="hero__description"
+            dangerouslySetInnerHTML={{ __html: descriptionText }}
+          />
+        )}
+      </div>
     </section>
   );
 }
