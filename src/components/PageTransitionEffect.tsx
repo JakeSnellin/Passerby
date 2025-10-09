@@ -1,10 +1,11 @@
 'use client';
 
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, LayoutGroupContext } from 'framer-motion';
 import { usePathname } from 'next/navigation';
 import { LayoutRouterContext } from 'next/dist/shared/lib/app-router-context.shared-runtime';
-import { useContext, useRef, useLayoutEffect } from 'react';
+import { useContext, useRef, useLayoutEffect, useEffect } from 'react';
 import { RefObject } from 'react';
+import { LayoutRefsContext } from '@/context/LayoutRefsContext';
 
 function FrozenRouter(props: { children: React.ReactNode }) {
   const context = useContext(LayoutRouterContext ?? {});
@@ -27,8 +28,8 @@ const variants = {
 const PageTransitionEffect = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
   const contentRef: RefObject<HTMLDivElement | null> = useRef(null);
-  const containerRef: RefObject<HTMLDivElement | null> = useRef(null);
-
+  //const containerRef: RefObject<HTMLDivElement | null> = useRef(null);
+  const { containerRef } = useContext(LayoutRefsContext);
   const pageId = pathname?.replace(/^\/+|\/+$/g, '').replace(/\//g, '-') || 'home';
 
   useLayoutEffect(() => {

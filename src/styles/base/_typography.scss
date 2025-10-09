@@ -22,14 +22,15 @@ $font-sizes: (
     desktop: 22px,
   ),
 
-  section-title: (
-    mobile: 14px,
+  work-indicator: (
+    mobile: 10px,
+    tablet: 16px,
     desktop: 16px,
   ),
 
   body-sm: (
-    desktop: 16px,
     mobile: 14px,
+    desktop: 16px,
   ),
 
   body-lg: (
@@ -54,16 +55,6 @@ $font-sizes: (
 
   metric-label: (
     desktop: 24px,
-    mobile: 14px,
-  ),
-
-  citation: (
-    desktop: 16px,
-    mobile: 14px,
-  ),
-
-  button: (
-    desktop: 16px,
     mobile: 14px,
   ),
 

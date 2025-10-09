@@ -3,24 +3,25 @@
 import { createContext, useRef, RefObject, useState } from 'react';
 
 type LayoutRefsContextType = {
-  heroRef: RefObject<HTMLElement | null>;
-  heroMounted: boolean;
-  setHeroMounted: (val: boolean) => void;
+  heroRef: RefObject<HTMLDivElement | null>;
+  containerRef: RefObject<HTMLDivElement | null>;
+  heroContentRef: RefObject<HTMLDivElement | null>;
 };
 
 // Default value for the context (placeholder ref)
 export const LayoutRefsContext = createContext<LayoutRefsContextType>({
   heroRef: { current: null },
-  heroMounted: false,
-  setHeroMounted: () => {},
+  containerRef: { current: null },
+  heroContentRef: { current: null },
 });
 
 export function LayoutRefsProvider({ children }: { children: React.ReactNode }) {
-  const heroRef = useRef<HTMLElement | null>(null);
-  const [heroMounted, setHeroMounted] = useState(false);
+  const heroRef = useRef<HTMLDivElement | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const heroContentRef = useRef<HTMLDivElement | null>(null);
 
   return (
-    <LayoutRefsContext.Provider value={{ heroRef, heroMounted, setHeroMounted }}>
+    <LayoutRefsContext.Provider value={{ heroRef, containerRef, heroContentRef }}>
       {children}
     </LayoutRefsContext.Provider>
   );

@@ -52,7 +52,7 @@ header {
   border-radius: $btn-radius;
   @include button-state-map($btn-state-bg-color);
   @include letter-spacing(map.get($letter-spacings, 0));
-  @include font-size(map.get($font-sizes, button), desktop);
+  @include font-size(map.get($font-sizes, body-sm), desktop);
   @include font-weight(map.get($font-weights, 300));
   @include line-height(map.get($line-heights, 100));
   font-family: 'LabGrotesque';

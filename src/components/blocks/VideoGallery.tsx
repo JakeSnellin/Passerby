@@ -1,7 +1,7 @@
 import { VideoGalleryBlock } from '@/types/block';
-import TransitionLink from '@/components/TransitionLink';
 import { useParams } from 'next/navigation';
 import { buildHref } from '@/lib/utils/buildHref';
+import VideoCard from '@/components/VideoCard';
 
 export default function VideoGallery({ videos: { nodes } }: VideoGalleryBlock) {
   const params = useParams();
@@ -10,16 +10,26 @@ export default function VideoGallery({ videos: { nodes } }: VideoGalleryBlock) {
   // Base projects path
   const baseProjectsHref = buildHref('/projects', creator);
 
-  return nodes.map((node) => (
-    <div className="video-card" key={node.id}>
-      <TransitionLink
-        href={`${baseProjectsHref}/${node.videoFields.projectSlug}`}
-        className="video-card__overlay"
-      >
-        <video src={node.videoFields.videoUrl} autoPlay muted loop playsInline preload="metadata">
-          Sorry, your browser doesn’t support embedded videos.
-        </video>
-      </TransitionLink>
-    </div>
-  ));
+  return (
+    <section className="projects-section" aria-label="Projects section">
+      <div className="work-indicator">
+        <p className="work-indicator__label">WORK</p>
+        <div className="work-indicator__line" aria-hidden="true"></div>
+      </div>
+      <ul className="video-gallery" aria-label="Video gallery">
+        {nodes.map(({ id, videoFields }) => (
+          <VideoCard
+            key={id}
+            id={id}
+            slug={videoFields.projectSlug}
+            title={videoFields.projectTitle}
+            services={videoFields.projectServices}
+            videoUrl={videoFields.videoUrl}
+            thumbnailUrl={videoFields.thumbnail.node.sourceUrl}
+            href={`${baseProjectsHref}/${videoFields.projectSlug}`}
+          />
+        ))}
+      </ul>
+    </section>
+  );
 }

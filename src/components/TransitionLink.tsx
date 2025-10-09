@@ -48,7 +48,7 @@ export default function TransitionLink({
     startTransition();
 
     // Navigate
-    router.push(href.toString(), { scroll: false });
+    router.push(href.toString());
 
     setTimeout(() => {
       lockRef.current = false;

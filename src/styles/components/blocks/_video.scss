@@ -1,4 +1,10 @@
-.video-card {
+@use '@/styles/abstracts/mixins' as *;
+@use '@/styles/base/typography' as *;
+@use '@/styles/abstracts/variables' as *;
+@use '@/styles/abstracts/functions' as *;
+@use 'sass:map';
+
+.video-gallery__video {
   position: relative;
   aspect-ratio: 16 / 9; // modern way, keeps 640x360 ratio
   @supports not (aspect-ratio: 16 / 9) {
@@ -6,7 +12,7 @@
     height: 0;
   }
 
-  &__overlay {
+  &-link {
     display: block;
     position: absolute;
     top: 0;
@@ -25,5 +31,71 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+}
+
+.video-gallery__card {
+  width: 100%;
+}
+
+.video-gallery__card-meta {
+  padding-top: get-spacer(12);
+}
+
+.video-gallery__card-meta-title,
+.video-gallery__card-meta-services {
+  font-family: 'LabGrotesque';
+  @include letter-spacing(map.get($letter-spacings, 0));
+  @include font-size(map.get($font-sizes, body-sm), mobile);
+  @include line-height(map.get($line-heights, 100));
+}
+
+.video-gallery__card-meta-title {
+  @include font-weight(map.get($font-weights, 400));
+  margin-bottom: get-spacer(4);
+}
+
+.video-gallery__card-meta-services {
+  @include font-weight(map.get($font-weights, 300));
+  color: rgba(184, 184, 182, 1);
+}
+
+.video-gallery {
+  display: flex;
+  flex-direction: column; /* single column on mobile */
+  width: 100%;
+  min-height: 100%; /* ensures container fills available height */
+  row-gap: 38px; /* vertical spacing */
+}
+
+/* Two columns on tablet and up */
+@media only screen and (min-width: 834px) {
+  .video-gallery {
+    flex-direction: row;
+    flex-wrap: wrap;
+    column-gap: 32px;
+    row-gap: 38px;
+  }
+
+  .video-gallery__card {
+    width: calc(50% - 16px);
+    margin-bottom: 0;
+  }
+
+  .video-gallery__card-meta {
+    padding-top: get-spacer(16);
+  }
+
+  .video-gallery__card-meta-title {
+    @include font-size(map.get($font-sizes, body-sm), desktop);
+    @include font-weight(map.get($font-weights, 300));
+    margin-bottom: get-spacer(8);
+  }
+}
+
+/* Optional: adjust vertical gap on larger screens */
+@media only screen and (min-width: 1440px) {
+  .video-gallery {
+    row-gap: 46px;
   }
 }

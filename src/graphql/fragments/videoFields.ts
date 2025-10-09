@@ -6,10 +6,12 @@ export const VIDEO_FIELDS_FRAGMENT = gql`
       __typename
       projectSlug
       videoUrl
+      projectTitle
+      projectServices
       thumbnail {
         node {
           altText
-          uri
+          sourceUrl
         }
       }
     }

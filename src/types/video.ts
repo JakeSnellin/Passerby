@@ -1,7 +1,7 @@
 // Thumbnail node
 export interface ThumbnailNode {
   altText: string;
-  uri: string;
+  sourceUrl: string;
 }
 
 // Custom video fields
@@ -9,6 +9,8 @@ export interface VideoFields {
   __typename: 'VideoFields';
   projectSlug: string;
   videoUrl: string;
+  projectTitle: string;
+  projectServices: string;
   thumbnail: {
     node: ThumbnailNode;
   };

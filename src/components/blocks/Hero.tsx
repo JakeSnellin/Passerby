@@ -5,9 +5,11 @@ import { HeroBlock } from '@/types/block';
 import { motion, useAnimation } from 'framer-motion';
 import { useContext } from 'react';
 import { LayoutRefsContext } from '@/context/LayoutRefsContext';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 export default function Hero({ logoImage, titleText, subtitleText, descriptionText }: HeroBlock) {
-  const { heroRef } = useContext(LayoutRefsContext);
+  const { heroRef, heroContentRef } = useContext(LayoutRefsContext);
   const controls = useAnimation();
 
   useEffect(() => {
@@ -35,11 +37,32 @@ export default function Hero({ logoImage, titleText, subtitleText, descriptionTe
     });
   }, [controls]);
 
+  useEffect(() => {
+    if (!heroContentRef.current) return;
+    gsap.registerPlugin(ScrollTrigger);
+
+    const ctx = gsap.context(() => {
+      gsap.to(heroContentRef.current, {
+        x: () => Math.max(-100, -window.innerWidth * 0.2), // scale with viewport width
+        y: () => Math.max(-200, -window.innerHeight * 0.25), // scale with viewport height
+        opacity: 0,
+        ease: 'none', // linear with scroll
+        scrollTrigger: {
+          scrub: true,
+          start: 'top top',
+          end: '+=200',
+        },
+      });
+    });
+
+    return () => ctx.revert(); // automatically cleans up ScrollTrigger on unmount
+  }, [heroContentRef]);
+
   const { sourceUrl = '', altText = 'Passerby logo' } = logoImage?.node ?? {};
 
   return (
     <section ref={heroRef} className="hero" aria-label="Hero section">
-      <div className="hero__content">
+      <div ref={heroContentRef} className="hero__content">
         {sourceUrl && (
           <motion.div animate={controls} style={{ transformOrigin: '50% 50%' }}>
             <img className="hero__logo" src={sourceUrl} alt={altText} width={53} height={58} />
