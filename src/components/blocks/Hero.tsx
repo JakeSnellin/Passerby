@@ -44,7 +44,7 @@ export default function Hero({ logoImage, titleText, subtitleText, descriptionTe
     const ctx = gsap.context(() => {
       gsap.to(heroContentRef.current, {
         x: () => Math.max(-100, -window.innerWidth * 0.2), // scale with viewport width
-        y: () => Math.max(-200, -window.innerHeight * 0.25), // scale with viewport height
+        //y: () => Math.max(-200, -window.innerHeight * 0.25), // scale with viewport height
         opacity: 0,
         ease: 'none', // linear with scroll
         scrollTrigger: {

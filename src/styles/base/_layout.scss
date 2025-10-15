@@ -7,21 +7,25 @@ body {
 .page-content {
   padding-inline: 1rem;
   position: absolute;
+  top: 0;
   left: 0;
   width: 100%;
   min-height: 100vh;
   background: rgba(255, 254, 246, 1);
+  will-change: transform;
 }
 
-.page-content[data-page='home'] {
+/*.page-content[data-page='home'] {
   padding-top: calc(($hero-content-pb-sm + $hero-content-pt-sm) + $hero-height-sm);
-}
+}*/
 
 .page-container {
+  flex: 1 0 auto;
   position: relative;
   width: 100%;
-  min-height: 100vh;
-  overflow: hidden;
+  overflow-x: clip;
+  margin-bottom: -0.5px;
+  min-height: 100vh; /* ensure it always covers viewport */
 }
 
 @media only screen and (min-width: 834px) {
@@ -29,9 +33,9 @@ body {
     padding-inline: 2rem;
   }
 
-  .page-content[data-page='home'] {
+  /*.page-content[data-page='home'] {
     padding-top: calc(($hero-content-pb-md + $hero-content-pt-md) + $hero-height-md);
-  }
+  }*/
 }
 
 @media only screen and (min-width: 1440px) {
@@ -39,7 +43,7 @@ body {
     padding-inline: 4rem;
   }
 
-  .page-content[data-page='home'] {
+  /*.page-content[data-page='home'] {
     padding-top: calc(($hero-content-pb-lg + $hero-content-pt-lg) + $hero-height-lg);
-  }
+  }*/
 }

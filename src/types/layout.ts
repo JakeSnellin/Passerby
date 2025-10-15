@@ -12,6 +12,7 @@ export interface CustomLogo {
 
 export interface SiteInfo {
   headerMenuLabel: string;
+  footerTitleText: string;
   customLogo: CustomLogo | null;
   headerMenu: MenuItem[];
   footerMenu: MenuItem[];

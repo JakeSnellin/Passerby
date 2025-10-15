@@ -1,9 +1,9 @@
 'use client';
 
-import { motion, AnimatePresence, LayoutGroupContext } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { usePathname } from 'next/navigation';
 import { LayoutRouterContext } from 'next/dist/shared/lib/app-router-context.shared-runtime';
-import { useContext, useRef, useLayoutEffect, useEffect } from 'react';
+import { useContext, useRef, useLayoutEffect } from 'react';
 import { RefObject } from 'react';
 import { LayoutRefsContext } from '@/context/LayoutRefsContext';
 
@@ -28,17 +28,21 @@ const variants = {
 const PageTransitionEffect = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
   const contentRef: RefObject<HTMLDivElement | null> = useRef(null);
-  //const containerRef: RefObject<HTMLDivElement | null> = useRef(null);
   const { containerRef } = useContext(LayoutRefsContext);
   const pageId = pathname?.replace(/^\/+|\/+$/g, '').replace(/\//g, '-') || 'home';
 
   useLayoutEffect(() => {
     if (!contentRef.current || !containerRef.current) return;
 
+    let frame: number;
     const updateHeight = () => {
-      if (contentRef.current && containerRef.current) {
-        containerRef.current.style.height = `${contentRef.current.offsetHeight}px`;
-      }
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        if (contentRef.current && containerRef.current) {
+          const rect = contentRef.current.getBoundingClientRect();
+          containerRef.current.style.height = `${rect.height}px`;
+        }
+      });
     };
 
     updateHeight();
@@ -68,6 +72,7 @@ const PageTransitionEffect = ({ children }: { children: React.ReactNode }) => {
           data-page={pageId}
           ref={contentRef}
         >
+          {pageId === 'home' && <div className="hero-spacer"></div>}
           <FrozenRouter>{children}</FrozenRouter>
         </motion.div>
       </AnimatePresence>

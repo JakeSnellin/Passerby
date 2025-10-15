@@ -16,9 +16,8 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const { customLogo, headerMenu, footerMenu, headerMenuLabel }: SiteInfo = await client.request(
-    GET_SITE_INFO,
-  );
+  const { customLogo, headerMenu, footerMenu, headerMenuLabel, footerTitleText }: SiteInfo =
+    await client.request(GET_SITE_INFO);
 
   return (
     <html lang="en">
@@ -32,7 +31,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             <PageTransitionEffect>{children}</PageTransitionEffect>
 
             {/* Optional static footer */}
-            {/* <Footer customLogo={customLogo} menu={footerMenu} /> */}
+            <Footer customLogo={customLogo} menu={footerMenu} titleText={footerTitleText} />
           </LayoutRefsProvider>
         </TransitionProvider>
       </body>

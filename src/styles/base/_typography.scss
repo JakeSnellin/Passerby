@@ -5,9 +5,9 @@ $font-sizes: (
   ),
 
   hero-heading-1: (
-    desktop: 30px,
-    tablet: 25px,
     mobile: 22px,
+    tablet: 25px,
+    desktop: 30px,
   ),
 
   hero-heading-2: (
@@ -34,42 +34,48 @@ $font-sizes: (
   ),
 
   body-lg: (
-    desktop: 24px,
     mobile: 16px,
+    desktop: 24px,
   ),
 
   link: (
-    desktop: 18px,
     mobile: 16px,
+    desktop: 18px,
+  ),
+
+  back-to-top: (
+    mobile: 16px,
+    desktop: 20px,
   ),
 
   card: (
-    desktop: 14px,
     mobile: 12px,
+    desktop: 14px,
   ),
 
   metric-value: (
-    desktop: 65px,
     mobile: 44px,
+    desktop: 65px,
   ),
 
   metric-label: (
-    desktop: 24px,
     mobile: 14px,
+    desktop: 24px,
   ),
 
-  footer-link: (
-    desktop: 14px,
+  footer-legal: (
     mobile: 12px,
+    desktop: 14px,
   ),
 
-  footer-note: (
-    desktop: 14px,
-    mobile: 12px,
+  footer-title: (
+    mobile: 20px,
+    desktop: 24px,
   ),
 );
 
 $line-heights: (
+  24: 2,
   100: 1,
   142: 1.42,
   150: 1.5,

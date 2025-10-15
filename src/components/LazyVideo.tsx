@@ -17,10 +17,10 @@ interface LazyVideoProps {
 
 export default function LazyVideo({
   src,
-  autoPlay,
-  muted,
-  loop,
-  playsInline,
+  autoPlay = true,
+  muted = true,
+  loop = true,
+  playsInline = true,
   className,
   posterUrl,
 }: LazyVideoProps) {
@@ -28,10 +28,19 @@ export default function LazyVideo({
   const isInView = useInView(videoRef, { amount: 0.25, once: true });
 
   useEffect(() => {
-    if (isInView && videoRef.current) {
-      videoRef.current.play().catch(() => {});
+    if (!videoRef.current) return;
+    const rect = videoRef.current.getBoundingClientRect();
+    const isAlreadyVisible = rect.top < window.innerHeight && rect.bottom > 0;
+    if (isAlreadyVisible) {
+      videoRef.current.src = src;
     }
-  }, [isInView]);
+  }, [src]);
+
+  useEffect(() => {
+    if (isInView && videoRef.current && !videoRef.current.src) {
+      videoRef.current.src = src;
+    }
+  }, [isInView, src]);
 
   return (
     <motion.video
