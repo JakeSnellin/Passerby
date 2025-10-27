@@ -35,7 +35,7 @@ export function TransitionProvider({ children }: { children: React.ReactNode }) 
 }
 
 /**
- * Hook that gives you access to the transition context.
+ * Hook that gives access to the transition context.
  * It guarantees a non-undefined return type.
  */
 export function useTransitionLock(): TransitionContextType {

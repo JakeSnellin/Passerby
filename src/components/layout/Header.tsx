@@ -4,6 +4,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { CustomLogo, MenuItem } from '@/types/layout';
 import TransitionLink from '@/components/TransitionLink';
+import { motion, useMotionValueEvent, useScroll, Variants } from 'framer-motion';
+import { useState, useEffect } from 'react';
 
 interface HeaderProps {
   customLogo: CustomLogo | null;
@@ -12,60 +14,191 @@ interface HeaderProps {
 }
 
 export default function Header({ customLogo, menu, label }: HeaderProps) {
+  const labels = {
+    menu: 'Menu',
+    close: 'Close',
+  };
+
+  const { scrollY } = useScroll();
+  const [scrollDirection, setScrollDirection] = useState<'up' | 'down'>('up');
+  const [isOpen, setIsOpen] = useState(false);
+
+  useMotionValueEvent(scrollY, 'change', (current) => {
+    const previous = scrollY?.getPrevious?.();
+    if (previous === undefined) return;
+    const diff = current - previous;
+    setScrollDirection(diff > 0 ? 'down' : 'up');
+  });
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    }
+  }, [isOpen]);
+
+  const openMenu = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const variants: Variants = {
+    up: { opacity: 1, y: 0, transition: { duration: 0.3, ease: 'easeOut' } },
+    down: { opacity: 0, y: -20, transition: { duration: 0.3, ease: 'easeIn' } },
+  };
+
   return (
     <header className="site-header">
       <div className="header-bar">
-        <Link href="/" className="header-bar__logo">
-          {customLogo && (
-            <Image
-              src={customLogo.url}
-              alt={customLogo.alt ?? 'Site logo'}
-              width={300}
-              height={100}
-              priority
-            />
-          )}
-        </Link>
-
-        <button
-          className="header-bar__toggle"
-          aria-label="Open Navigation"
-          aria-controls="navigation-drawer"
-          aria-expanded="false"
+        <motion.div
+          variants={variants}
+          animate={scrollDirection === 'down' ? 'down' : 'up'}
+          className="header-bar__wrapper"
         >
-          {label}
-        </button>
+          <Link href="/" className="header-bar__logo">
+            {customLogo && (
+              <Image
+                src={customLogo.url}
+                alt={customLogo.alt ?? 'Site logo'}
+                width={300}
+                height={100}
+                priority
+              />
+            )}
+          </Link>
 
-        {/* Desktop nav */}
-        <nav className="header-bar__nav">
-          <ul className="header-bar__list">
-            {menu.map((item) => (
-              <li key={item.id}>
-                <TransitionLink className="header-bar__link" href={item.url}>
-                  <div className="header-bar__link-text-wrapper">
-                    <span aria-hidden="true" className="header-bar__link-text--new">
-                      {item.label}
-                    </span>
-                    <span className="header-bar__link-text--old">{item.label}</span>
-                  </div>
-                </TransitionLink>
+          <button
+            className="header-bar__toggle"
+            aria-label="Open Navigation"
+            aria-controls="navigation-drawer"
+            aria-expanded="false"
+            onClick={openMenu}
+          >
+            {isOpen ? labels.close : labels.menu}
+          </button>
+
+          {/* Desktop nav */}
+          <nav className="header-bar__nav">
+            <ul className="header-bar__list">
+              {menu.map((item) => (
+                <li key={item.id}>
+                  <TransitionLink className="header-bar__link" href={item.url}>
+                    <div className="header-bar__link-text-wrapper">
+                      <span aria-hidden="true" className="header-bar__link-text--new">
+                        {item.label}
+                      </span>
+                      <span className="header-bar__link-text--old">{item.label}</span>
+                    </div>
+                  </TransitionLink>
+                </li>
+              ))}
+              <li className="header-bar__social-icons">
+                <Link href="#">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="13"
+                    height="13"
+                    viewBox="0 0 13 13"
+                    fill="none"
+                  >
+                    <path
+                      d="M8.96433 1H4.03554C2.36174 1 1 2.36181 1 4.0356V8.9644C1 10.6383 2.36174 12 4.03554 12H8.96433C10.6383 12 12 10.6382 12 8.9644V4.0356C12.0001 2.36181 10.6383 1 8.96433 1ZM11.0241 8.9644C11.0241 10.1001 10.1001 11.024 8.9644 11.024H4.03554C2.89989 11.0241 1.97597 10.1001 1.97597 8.9644V4.0356C1.97597 2.89996 2.89989 1.97597 4.03554 1.97597H8.96433C10.1 1.97597 11.024 2.89996 11.024 4.0356L11.0241 8.9644Z"
+                      fill="black"
+                    />
+                    <path
+                      d="M6.49946 3.66406C4.93654 3.66406 3.66504 4.93556 3.66504 6.49848C3.66504 8.06134 4.93654 9.33278 6.49946 9.33278C8.06238 9.33278 9.33388 8.06134 9.33388 6.49848C9.33388 4.93556 8.06238 3.66406 6.49946 3.66406ZM6.49946 8.35674C5.47475 8.35674 4.64101 7.52313 4.64101 6.49842C4.64101 5.47365 5.47469 4.63997 6.49946 4.63997C7.52423 4.63997 8.35791 5.47365 8.35791 6.49842C8.35791 7.52313 7.52417 8.35674 6.49946 8.35674Z"
+                      fill="black"
+                    />
+                    <path
+                      d="M9.45302 2.83984C9.26498 2.83984 9.08026 2.91597 8.94746 3.04935C8.81402 3.18209 8.7373 3.36687 8.7373 3.55556C8.7373 3.74366 8.81408 3.92838 8.94746 4.06176C9.0802 4.19449 9.26498 4.27127 9.45302 4.27127C9.64171 4.27127 9.82584 4.19449 9.95922 4.06176C10.0926 3.92838 10.1687 3.7436 10.1687 3.55556C10.1687 3.36687 10.0926 3.18209 9.95922 3.04935C9.82649 2.91597 9.64171 2.83984 9.45302 2.83984Z"
+                      fill="black"
+                    />
+                  </svg>
+                </Link>
+                <Link href="#">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="13"
+                    height="13"
+                    viewBox="0 0 13 13"
+                    fill="none"
+                  >
+                    <path
+                      d="M8.88631 12.0008V7.21338C8.88631 6.96232 8.85257 6.75201 8.7474 6.61144C8.64647 6.47654 8.46926 6.39778 8.17589 6.39778C7.2263 6.39778 6.98885 7.11758 6.95824 7.22688V12.0008L4.56934 12.0008V4.20703H6.95824V4.82405C7.11807 4.72023 7.33049 4.59982 7.58945 4.49346C7.96819 4.33793 8.44595 4.21238 9.00333 4.21238C9.44789 4.21238 10.1794 4.371 10.6942 5.07492C11.0325 5.53747 11.2756 6.23485 11.2756 7.27649V12.0008L8.88631 12.0008Z"
+                      fill="black"
+                    />
+                    <path
+                      d="M2.19759 3.26381C1.88595 3.26381 1.60336 3.13687 1.39872 2.93114C1.19465 2.726 1.06836 2.44276 1.06836 2.12923C1.06836 1.81753 1.19486 1.53525 1.39921 1.3309C1.60363 1.12648 1.886 1 2.19759 1L2.1985 1.00046C2.51025 1.00345 2.79222 1.13104 2.99601 1.33482C3.20037 1.53919 3.3268 1.82016 3.3268 2.12923C3.3268 2.4428 3.20057 2.72608 2.9965 2.93124C2.79191 3.13691 2.50936 3.26381 2.19759 3.26381Z"
+                      fill="black"
+                    />
+                    <path d="M1 12.0008V4.20703H3.39617V12.0008H1Z" fill="black" />
+                  </svg>
+                </Link>
               </li>
-            ))}
-          </ul>
-        </nav>
+            </ul>
+          </nav>
+        </motion.div>
 
         {/* Mobile drawer */}
-        <nav id="navigation-drawer" className="navigation-drawer">
-          <ul className="navigation-drawer__list">
-            {menu.map((item) => (
-              <li key={item.id}>
-                <TransitionLink className="navigation-drawer__link" href={item.url}>
-                  {item.label}
-                </TransitionLink>
+        {isOpen && (
+          <nav id="navigation-drawer" className="navigation-drawer">
+            <ul className="navigation-drawer__list">
+              {menu.map((item) => (
+                <li key={item.id}>
+                  <TransitionLink className="navigation-drawer__link" href={item.url}>
+                    <div className="navigation-drawer__link-text-wrapper">
+                      <span aria-hidden="true" className="navigation-drawer__link-text--new">
+                        {item.label}
+                      </span>
+                      <span className="navigation-drawer__link-text--old">{item.label}</span>
+                    </div>
+                  </TransitionLink>
+                </li>
+              ))}
+              <li className="navigation-drawer__social-icons">
+                <Link href="#">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="13"
+                    height="13"
+                    viewBox="0 0 13 13"
+                    fill="none"
+                  >
+                    <path
+                      d="M8.96433 1H4.03554C2.36174 1 1 2.36181 1 4.0356V8.9644C1 10.6383 2.36174 12 4.03554 12H8.96433C10.6383 12 12 10.6382 12 8.9644V4.0356C12.0001 2.36181 10.6383 1 8.96433 1ZM11.0241 8.9644C11.0241 10.1001 10.1001 11.024 8.9644 11.024H4.03554C2.89989 11.0241 1.97597 10.1001 1.97597 8.9644V4.0356C1.97597 2.89996 2.89989 1.97597 4.03554 1.97597H8.96433C10.1 1.97597 11.024 2.89996 11.024 4.0356L11.0241 8.9644Z"
+                      fill="black"
+                    />
+                    <path
+                      d="M6.49946 3.66406C4.93654 3.66406 3.66504 4.93556 3.66504 6.49848C3.66504 8.06134 4.93654 9.33278 6.49946 9.33278C8.06238 9.33278 9.33388 8.06134 9.33388 6.49848C9.33388 4.93556 8.06238 3.66406 6.49946 3.66406ZM6.49946 8.35674C5.47475 8.35674 4.64101 7.52313 4.64101 6.49842C4.64101 5.47365 5.47469 4.63997 6.49946 4.63997C7.52423 4.63997 8.35791 5.47365 8.35791 6.49842C8.35791 7.52313 7.52417 8.35674 6.49946 8.35674Z"
+                      fill="black"
+                    />
+                    <path
+                      d="M9.45302 2.83984C9.26498 2.83984 9.08026 2.91597 8.94746 3.04935C8.81402 3.18209 8.7373 3.36687 8.7373 3.55556C8.7373 3.74366 8.81408 3.92838 8.94746 4.06176C9.0802 4.19449 9.26498 4.27127 9.45302 4.27127C9.64171 4.27127 9.82584 4.19449 9.95922 4.06176C10.0926 3.92838 10.1687 3.7436 10.1687 3.55556C10.1687 3.36687 10.0926 3.18209 9.95922 3.04935C9.82649 2.91597 9.64171 2.83984 9.45302 2.83984Z"
+                      fill="black"
+                    />
+                  </svg>
+                </Link>
+                <Link href="#">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="13"
+                    height="13"
+                    viewBox="0 0 13 13"
+                    fill="none"
+                  >
+                    <path
+                      d="M8.88631 12.0008V7.21338C8.88631 6.96232 8.85257 6.75201 8.7474 6.61144C8.64647 6.47654 8.46926 6.39778 8.17589 6.39778C7.2263 6.39778 6.98885 7.11758 6.95824 7.22688V12.0008L4.56934 12.0008V4.20703H6.95824V4.82405C7.11807 4.72023 7.33049 4.59982 7.58945 4.49346C7.96819 4.33793 8.44595 4.21238 9.00333 4.21238C9.44789 4.21238 10.1794 4.371 10.6942 5.07492C11.0325 5.53747 11.2756 6.23485 11.2756 7.27649V12.0008L8.88631 12.0008Z"
+                      fill="black"
+                    />
+                    <path
+                      d="M2.19759 3.26381C1.88595 3.26381 1.60336 3.13687 1.39872 2.93114C1.19465 2.726 1.06836 2.44276 1.06836 2.12923C1.06836 1.81753 1.19486 1.53525 1.39921 1.3309C1.60363 1.12648 1.886 1 2.19759 1L2.1985 1.00046C2.51025 1.00345 2.79222 1.13104 2.99601 1.33482C3.20037 1.53919 3.3268 1.82016 3.3268 2.12923C3.3268 2.4428 3.20057 2.72608 2.9965 2.93124C2.79191 3.13691 2.50936 3.26381 2.19759 3.26381Z"
+                      fill="black"
+                    />
+                    <path d="M1 12.0008V4.20703H3.39617V12.0008H1Z" fill="black" />
+                  </svg>
+                </Link>
               </li>
-            ))}
-          </ul>
-        </nav>
+            </ul>
+          </nav>
+        )}
       </div>
     </header>
   );

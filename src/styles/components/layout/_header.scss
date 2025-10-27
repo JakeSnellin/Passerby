@@ -9,12 +9,13 @@ header {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 100;
+  z-index: 1100;
   width: 100%;
 }
 
 .header-bar__logo {
   display: block;
+  z-index: 1001;
   $nav-mobile-logo: get-logo(nav-logo, mobile);
   width: map.get($nav-mobile-logo, width);
   height: map.get($nav-mobile-logo, height);
@@ -24,16 +25,32 @@ header {
   display: none;
 }
 
+.header-bar__social-icons,
+.navigation-drawer__social-icons {
+  display: flex;
+  gap: get-spacer(38);
+  align-items: center;
+}
+
+.navigation-drawer__social-icons {
+  padding: 0.668rem 1.063rem;
+  margin-top: 3.313rem;
+}
+
 .header-bar__list {
   display: flex;
   gap: $header-bar-gap-x;
 }
 
 .navigation-drawer {
-  display: none;
+  width: 100%;
+  z-index: 1000;
+  position: fixed;
+  inset: 0;
+  background-color: rgba(242, 153, 74, 1);
 }
 
-.header-bar {
+.header-bar__wrapper {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -41,16 +58,17 @@ header {
 }
 
 .header-bar__toggle {
+  z-index: 1001;
   cursor: pointer;
 }
 
-.header-bar__link {
+.header-bar__link,
+.navigation-drawer__link {
   display: block;
   position: relative;
   overflow: hidden; // clip sliding text
   padding: $btn-padding-y $btn-padding-x;
   border-radius: $btn-radius;
-  @include button-state-map($btn-state-bg-color);
   @include letter-spacing(map.get($letter-spacings, 0));
   @include font-size(map.get($font-sizes, body-sm), desktop);
   @include font-weight(map.get($font-weights, 300));
@@ -58,14 +76,32 @@ header {
   font-family: 'LabGrotesque';
 }
 
-.header-bar__link-text-wrapper {
+.header-bar__link {
+  @include button-state-map($btn-state-bg-color);
+}
+
+.navigation-drawer__link {
+  @include button-state-map($drawer-btn-state-bg-color);
+  width: fit-content;
+}
+
+.navigation-drawer__list {
+  display: flex;
+  flex-direction: column;
+  gap: get-spacer(32);
+  padding: 22.7vh 0 0 0.188rem;
+}
+
+.header-bar__link-text-wrapper,
+.navigation-drawer__link-text-wrapper {
   position: relative;
   display: block;
   width: 100%;
 }
 
 /* Old text keeps button shape */
-.header-bar__link-text--old {
+.header-bar__link-text--old,
+.navigation-drawer__link-text--old {
   display: inline-block;
   position: relative;
   z-index: 1;
@@ -77,7 +113,8 @@ header {
 }
 
 /* New text slides in from the right */
-.header-bar__link-text--new {
+.header-bar__link-text--new,
+.navigation-drawer__link-text--new {
   position: absolute;
   top: 0;
   left: 0; // align with wrapper
@@ -91,12 +128,14 @@ header {
 }
 
 /* Hover states */
-.header-bar__link:hover .header-bar__link-text--old {
+.header-bar__link:hover .header-bar__link-text--old,
+.navigation-drawer__link:hover .navigation-drawer__link-text--old {
   transform: translateX(calc(-100% - #{$btn-padding-x})); // slide left
   opacity: 0;
 }
 
-.header-bar__link:hover .header-bar__link-text--new {
+.header-bar__link:hover .header-bar__link-text--new,
+.navigation-drawer__link:hover .navigation-drawer__link-text--new {
   transform: translateX(0); // slide into view
   opacity: 1;
 }

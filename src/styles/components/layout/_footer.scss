@@ -8,7 +8,7 @@
   flex-shrink: 0; /* don’t let the footer collapse or grow */
   width: 100%;
   position: relative;
-  z-index: 200;
+  z-index: 900;
   padding-top: get-spacer(36);
   padding-bottom: get-spacer(19);
   padding-right: get-spacer(28);
