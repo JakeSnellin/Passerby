@@ -1,83 +1,75 @@
 'use client';
 
+import React, { useLayoutEffect, useRef, useContext } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { usePathname } from 'next/navigation';
 import { LayoutRouterContext } from 'next/dist/shared/lib/app-router-context.shared-runtime';
-import { useContext, useRef, useLayoutEffect } from 'react';
-import { RefObject } from 'react';
-import { LayoutRefsContext } from '@/context/LayoutRefsContext';
+import { useTransitionContext } from '@/context/TransitionContext';
 
 function FrozenRouter(props: { children: React.ReactNode }) {
-  const context = useContext(LayoutRouterContext ?? {});
+  const context = useContext(LayoutRouterContext);
   const frozen = useRef(context).current;
-
   if (!frozen) return <>{props.children}</>;
-
   return (
     <LayoutRouterContext.Provider value={frozen}>{props.children}</LayoutRouterContext.Provider>
   );
 }
 
-// Slide left old page, slide right new page
-const variants = {
-  hidden: { x: '100%', opacity: 1 }, // new page enters from right
-  enter: { x: 0, opacity: 1 },
-  exit: { x: '-50%', opacity: 0.5 }, // old page slides left with fade
-};
-
-const PageTransitionEffect = ({ children }: { children: React.ReactNode }) => {
+export default function ({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const contentRef: RefObject<HTMLDivElement | null> = useRef(null);
-  const { containerRef } = useContext(LayoutRefsContext);
+  const prevPathname = useRef(pathname);
+  const { scrollYRef } = useTransitionContext();
+  const pageContentRef = useRef<HTMLDivElement | null>(null);
   const pageId = pathname?.replace(/^\/+|\/+$/g, '').replace(/\//g, '-') || 'home';
 
   useLayoutEffect(() => {
-    if (!contentRef.current || !containerRef.current) return;
-
-    let frame: number;
-    const updateHeight = () => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => {
-        if (contentRef.current && containerRef.current) {
-          const rect = contentRef.current.getBoundingClientRect();
-          containerRef.current.style.height = `${rect.height}px`;
+    if (pathname !== prevPathname.current) {
+      prevPathname.current = pathname;
+      const motionEls = document.querySelectorAll<HTMLDivElement>('.page-content');
+      motionEls.forEach((el, index) => {
+        if (index === 0) {
+          const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+          el.style.position = 'fixed';
+          el.style.top = `-${scrollYRef.current}px`;
+          el.style.left = '0';
+          el.style.right = 'auto';
+          el.style.width = '100%';
+          el.style.transform = 'translateX(0)';
+          el.style.willChange = 'transform';
+          el.style.marginRight = `${scrollbarWidth}px`;
         }
       });
-    };
-
-    updateHeight();
-
-    const resizeObserver = new ResizeObserver(updateHeight);
-    resizeObserver.observe(contentRef.current);
-
-    window.addEventListener('resize', updateHeight);
-
-    return () => {
-      resizeObserver.disconnect();
-      window.removeEventListener('resize', updateHeight);
-    };
+    }
   }, [pathname]);
 
+  useLayoutEffect(() => {
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+  }, []);
+
   return (
-    <div ref={containerRef} className="page-container">
+    <div className="page-container">
       <AnimatePresence mode="sync" initial={false}>
         <motion.div
           key={pathname}
-          initial="hidden"
-          animate="enter"
-          exit="exit"
-          variants={variants}
-          transition={{ ease: 'easeInOut', duration: 1.2 }}
           className="page-content"
+          ref={pageContentRef}
+          initial={{ x: '100%', opacity: 1 }}
+          animate={{ x: '0', opacity: 1 }}
+          exit={{ x: '-50%', opacity: 0.5 }}
+          transition={{ ease: 'easeInOut', duration: 1.2 }}
           data-page={pageId}
-          ref={contentRef}
+          onAnimationStart={() => {
+            window.scrollTo(0, 0);
+          }}
+          onAnimationComplete={() => {
+            scrollYRef.current = 0;
+          }}
         >
-          {pageId === 'home' && <div className="hero-spacer"></div>}
           <FrozenRouter>{children}</FrozenRouter>
         </motion.div>
       </AnimatePresence>
     </div>
   );
-};
-
-export default PageTransitionEffect;
+}

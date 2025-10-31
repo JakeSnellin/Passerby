@@ -1,7 +1,7 @@
 import { VideoGalleryBlock } from '@/types/block';
 import { useParams } from 'next/navigation';
 import { buildHref } from '@/lib/utils/buildHref';
-import VideoCard from '@/components/VideoCard';
+import VideoCard from '@/components/ui/VideoCard';
 
 export default function VideoGallery({ videos: { nodes } }: VideoGalleryBlock) {
   const params = useParams();

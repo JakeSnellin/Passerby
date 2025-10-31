@@ -1,4 +1,4 @@
-import BlockRenderer from '@/components/BlockRenderer';
+/*import BlockRenderer from '@/components/BlockRenderer';
 import { GET_PAGE_BY_SLUG } from '@/graphql/queries/getPageBySlug';
 import { client } from '@/lib/graphql/client';
 import { PageProps } from '@/types/page';
@@ -24,4 +24,29 @@ export default async function Sample() {
   const blocks: BlockData[] = normaliseBlocks(page);
 
   return <BlockRenderer blocks={blocks} />;
+}*/
+
+export default function SamplePage() {
+  return (
+    <>
+      <div
+        style={{ height: '100vh', width: '100%', background: '#D782BA', paddingInline: '1rem' }}
+      ></div>
+      <div
+        style={{ height: '100vh', width: '100%', background: '#EEB1D5', paddingInline: '1rem' }}
+      ></div>
+      <div
+        style={{ height: '100vh', width: '100%', background: '#EFC7E5', paddingInline: '1rem' }}
+      ></div>
+      <div
+        style={{ height: '100vh', width: '100%', background: '#D782BA', paddingInline: '1rem' }}
+      ></div>
+      <div
+        style={{ height: '100vh', width: '100%', background: '#EEB1D5', paddingInline: '1rem' }}
+      ></div>
+      <div
+        style={{ height: '100vh', width: '100%', background: '#EFC7E5', paddingInline: '1rem' }}
+      ></div>
+    </>
+  );
 }

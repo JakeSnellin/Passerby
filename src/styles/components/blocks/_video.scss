@@ -4,6 +4,14 @@
 @use '@/styles/abstracts/functions' as *;
 @use 'sass:map';
 
+.projects-section {
+  background: color('page-bg');
+  width: 100%;
+  z-index: 30;
+  position: relative;
+  padding-inline: 1rem;
+}
+
 .video-gallery__video {
   position: relative;
   aspect-ratio: 16 / 9; // modern way, keeps 640x360 ratio
@@ -62,7 +70,7 @@
 
 .video-gallery {
   padding-bottom: get-spacer(38);
-  margin-bottom: get-spacer(46);
+  //margin-bottom: get-spacer(46);
   display: flex;
   flex-direction: column; /* single column on mobile */
   width: 100%;
@@ -72,8 +80,12 @@
 
 /* Two columns on tablet and up */
 @media only screen and (min-width: 834px) {
+  .projects-section {
+    padding-inline: 1.875rem;
+  }
+
   .video-gallery {
-    margin-bottom: get-spacer(90);
+    //margin-bottom: get-spacer(90);
     flex-direction: row;
     flex-wrap: wrap;
     column-gap: 32px;
@@ -98,6 +110,10 @@
 
 /* Optional: adjust vertical gap on larger screens */
 @media only screen and (min-width: 1440px) {
+  .hero {
+    padding-inline: 4rem;
+  }
+
   .video-gallery {
     row-gap: 46px;
   }

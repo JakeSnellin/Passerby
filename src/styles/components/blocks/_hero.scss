@@ -5,24 +5,20 @@
 @use 'sass:map';
 
 .hero {
-  position: fixed;
+  position: sticky;
   top: 0;
-  left: 0;
+  padding-inline: 1rem;
+  z-index: 20;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  //padding-inline: 10px;
 }
 
 .hero__content {
   width: clamp(268px, calc(268px + (100vw - 320px) * 0.535), 639px);
   padding-top: $hero-pt;
   padding-bottom: $hero-pb;
-  /*padding-top: $hero-content-pt-sm;
-  padding-bottom: $hero-content-pb-sm;*/
-  //padding-top: calc(126px + 3vw);
-  //padding-bottom: calc(40px + 3vw);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -64,17 +60,9 @@
   margin-bottom: get-spacer(12);
 }
 
-.hero-spacer {
-  width: 100%;
-  height: $hero-spacer-height; /* hero height + padding-top + padding-bottom */
-}
-
 @media only screen and (min-width: 834px) {
-  .hero__content {
-    /*padding-top: $hero-content-pt-md;
-    padding-bottom: $hero-content-pb-md;*/
-    //padding-top: calc(181px + 3vw);
-    //padding-bottom: calc(122px + 3vw);
+  .hero {
+    padding-inline: 1.875rem;
   }
 
   .hero__logo {
@@ -100,11 +88,8 @@
 }
 
 @media only screen and (min-width: 1440px) {
-  .hero__content {
-    /*padding-top: $hero-content-pt-lg;
-    padding-bottom: $hero-content-pb-lg;*/
-    //padding-top: calc(168px + 3vw);
-    //padding-bottom: calc(11px + 2vw);
+  .hero {
+    padding-inline: 4rem;
   }
 
   .hero__logo {

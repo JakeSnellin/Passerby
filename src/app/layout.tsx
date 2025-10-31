@@ -25,13 +25,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <TransitionProvider>
           <LayoutRefsProvider>
             {/* Static header */}
-            <Header customLogo={customLogo} menu={headerMenu} label={headerMenuLabel} />
+            {<Header customLogo={customLogo} menu={headerMenu} label={headerMenuLabel} />}
 
             {/* Animated page content */}
-            <PageTransitionEffect>{children}</PageTransitionEffect>
-
-            {/* Optional static footer */}
-            <Footer customLogo={customLogo} menu={footerMenu} titleText={footerTitleText} />
+            <PageTransitionEffect>
+              <main>{children}</main>
+              <Footer customLogo={customLogo} menu={footerMenu} titleText={footerTitleText} />
+            </PageTransitionEffect>
           </LayoutRefsProvider>
         </TransitionProvider>
       </body>

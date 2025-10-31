@@ -1,4 +1,8 @@
-/* styles/base/_reset.scss */
+@use '@/styles/abstracts/mixins' as *;
+@use '@/styles/base/typography' as *;
+@use '@/styles/abstracts/variables' as *;
+@use '@/styles/abstracts/functions' as *;
+@use 'sass:map';
 
 *,
 *::before,
@@ -8,26 +12,17 @@
   margin: 0;
 }
 
-html,
-body {
-  max-width: 100%;
-  margin: 0;
-  padding: 0;
-}
-
 html {
   -webkit-text-size-adjust: 100%;
   min-height: 100%;
 }
 
 body {
-  min-height: 100vh;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
+  overflow-x: hidden;
+  min-height: 100%;
   font-size: 100%;
   line-height: 1.5;
-  background-color: #fff;
+  background-color: color('body-bg');
   color: #111;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
     Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;

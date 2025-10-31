@@ -7,6 +7,7 @@ interface TransitionContextType {
   startTransition: () => void;
   endTransition: () => void;
   lockRef: RefObject<boolean>;
+  scrollYRef: RefObject<number>;
 }
 
 const TransitionContext = createContext<TransitionContextType | undefined>(undefined);
@@ -14,6 +15,7 @@ const TransitionContext = createContext<TransitionContextType | undefined>(undef
 export function TransitionProvider({ children }: { children: React.ReactNode }) {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const lockRef = useRef(false);
+  const scrollYRef = useRef(0);
 
   const startTransition = () => {
     lockRef.current = true;
@@ -27,7 +29,7 @@ export function TransitionProvider({ children }: { children: React.ReactNode }) 
 
   return (
     <TransitionContext.Provider
-      value={{ isTransitioning, startTransition, endTransition, lockRef }}
+      value={{ isTransitioning, startTransition, endTransition, lockRef, scrollYRef }}
     >
       {children}
     </TransitionContext.Provider>
@@ -38,7 +40,7 @@ export function TransitionProvider({ children }: { children: React.ReactNode }) 
  * Hook that gives access to the transition context.
  * It guarantees a non-undefined return type.
  */
-export function useTransitionLock(): TransitionContextType {
+export function useTransitionContext(): TransitionContextType {
   const context = useContext(TransitionContext);
   if (!context) {
     throw new Error('useTransitionLock must be used within a TransitionProvider');

@@ -55,6 +55,8 @@ $spacers: (
   // 148px
   172: 10.75rem,
   // 172px
+  205: 12.813rem,
+  // 205px
 );
 
 $btn-state-bg-color: (
@@ -112,6 +114,18 @@ $logos: (
       mb: 0.875rem,
     ),
   ),
+);
+
+$color-off-white: #fffef6;
+$color-black: #000000;
+$color-gray: #b8b8b6;
+
+// Semantic colors
+$colors: (
+  'body-bg': $color-black,
+  'page-bg': $color-off-white,
+  'border': $color-black,
+  'footer-text': $color-gray,
 );
 
 $btn-state-color: rgba(0, 0, 0, 0.5);

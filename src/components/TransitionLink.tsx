@@ -1,6 +1,6 @@
 'use client';
 
-import { useTransitionLock } from '@/context/TransitionContext';
+import { useTransitionContext } from '@/context/TransitionContext';
 import { useRouter, usePathname } from 'next/navigation';
 import Link, { LinkProps } from 'next/link';
 import { MouseEventHandler, ReactNode } from 'react';
@@ -18,7 +18,7 @@ export default function TransitionLink({
 }: TransitionLinkProps) {
   const router = useRouter();
   const pathname = usePathname();
-  const { lockRef, startTransition } = useTransitionLock();
+  const { lockRef, startTransition, scrollYRef } = useTransitionContext();
 
   const handleClick: MouseEventHandler<HTMLAnchorElement> = (e) => {
     // Ignore modifier clicks or middle clicks
@@ -35,6 +35,9 @@ export default function TransitionLink({
 
     e.preventDefault();
 
+    // Capture scroll position
+    if (typeof window !== 'undefined') scrollYRef.current = window.scrollY;
+
     // Don't navigate to the same page
     if (pathname === href) return;
 
@@ -48,7 +51,7 @@ export default function TransitionLink({
     startTransition();
 
     // Navigate
-    router.push(href.toString());
+    router.push(href.toString(), { scroll: false });
 
     setTimeout(() => {
       lockRef.current = false;
@@ -56,7 +59,7 @@ export default function TransitionLink({
   };
 
   return (
-    <Link href={href} {...props} onClick={handleClick} className={className}>
+    <Link href={href} scroll={false} {...props} onClick={handleClick} className={className}>
       {children}
     </Link>
   );

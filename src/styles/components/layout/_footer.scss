@@ -5,15 +5,15 @@
 @use 'sass:map';
 
 .site-footer {
-  flex-shrink: 0; /* don’t let the footer collapse or grow */
+  border-top: 0.5px solid color('border');
   width: 100%;
   position: relative;
-  z-index: 900;
+  z-index: 20;
   padding-top: get-spacer(36);
   padding-bottom: get-spacer(19);
   padding-right: get-spacer(28);
   padding-left: get-spacer(28);
-  background: rgba(255, 254, 246, 1);
+  background: color('page-bg');
   font-family: 'LabGrotesque';
   @include letter-spacing(map.get($letter-spacings, 0));
   @include font-size(map.get($font-sizes, body-lg), mobile);
@@ -100,7 +100,7 @@
   @include font-weight(map.get($font-weights, 400));
   @include font-size(map.get($font-sizes, footer-legal), mobile);
   @include line-height(map.get($line-heights, 24));
-  color: rgba(184, 184, 182, 1);
+  color: color('footer-text');
 }
 
 @media only screen and (min-width: 834px) {
