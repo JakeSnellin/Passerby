@@ -18,7 +18,7 @@ export default function TransitionLink({
 }: TransitionLinkProps) {
   const router = useRouter();
   const pathname = usePathname();
-  const { lockRef, startTransition, scrollYRef } = useTransitionContext();
+  const { lockRef, startTransition, endTransition, scrollYRef } = useTransitionContext();
 
   const handleClick: MouseEventHandler<HTMLAnchorElement> = (e) => {
     // Ignore modifier clicks or middle clicks
@@ -54,7 +54,7 @@ export default function TransitionLink({
     router.push(href.toString(), { scroll: false });
 
     setTimeout(() => {
-      lockRef.current = false;
+      endTransition();
     }, 1200);
   };
 

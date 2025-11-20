@@ -28,6 +28,16 @@ export interface ProjectOverviewBlock {
   };
 }
 
+export interface ProjectHeroBlock {
+  __typename: 'ProjectHeroBlock';
+  heroImage?: {
+    node: {
+      altText: string;
+      sourceUrl: string;
+    };
+  };
+}
+
 export interface VideoGalleryBlock {
   __typename: 'VideoGalleryBlock';
   videos: {
@@ -187,6 +197,7 @@ export type BlockData =
   | CoreSpacerBlock
   | CoreVideoBlock
   | HeroBlock
+  | ProjectHeroBlock
   | ProjectOverviewBlock
   | VideoGalleryBlock;
 

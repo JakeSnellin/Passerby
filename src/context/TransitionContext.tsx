@@ -29,7 +29,13 @@ export function TransitionProvider({ children }: { children: React.ReactNode }) 
 
   return (
     <TransitionContext.Provider
-      value={{ isTransitioning, startTransition, endTransition, lockRef, scrollYRef }}
+      value={{
+        isTransitioning,
+        startTransition,
+        endTransition,
+        lockRef,
+        scrollYRef,
+      }}
     >
       {children}
     </TransitionContext.Provider>

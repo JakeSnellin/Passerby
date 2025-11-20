@@ -12,6 +12,9 @@ const nextConfig = {
     };
     return config;
   },
+  images: {
+    domains: ['passerby-wp.local'],
+  },
 };
 
 module.exports = nextConfig;

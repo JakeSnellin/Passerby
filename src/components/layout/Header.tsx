@@ -6,7 +6,7 @@ import { CustomLogo, MenuItem } from '@/types/layout';
 import TransitionLink from '@/components/TransitionLink';
 import { motion, useMotionValueEvent, useScroll, Variants } from 'framer-motion';
 import { useState, useEffect } from 'react';
-
+import { usePathname } from 'next/navigation';
 interface HeaderProps {
   customLogo: CustomLogo | null;
   menu: MenuItem[];
